@@ -24,11 +24,14 @@ test('runNexusCli: help returns 0', async () => {
   assert.match(buf, /Usage:/);
 });
 
-test('runNexusCli: unknown command returns 2', async () => {
+test('runNexusCli: bare unknown word is treated as a run task (no crash)', async () => {
+  // Per HELP: "if first arg is not a subcommand, treated as nexus run <task>".
+  // So a bare word becomes a task; without a gateway key it surfaces a clear
+  // NEXUS_GATEWAY_KEY error, never "unknown command".
   let err = '';
   const code = await runNexusCli(['frobnicate'], {}, () => {}, (s) => { err += s; });
-  assert.strictEqual(code, 2);
-  assert.match(err, /unknown command/);
+  assert.strictEqual(code, 1);
+    assert.match(err, /run: NEXUS_GATEWAY_KEY/);
 });
 
 test('runNexusCli: run without task returns 2', async () => {

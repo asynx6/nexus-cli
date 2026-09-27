@@ -77,10 +77,13 @@ export function parseArgs(argv) {
     // subcommands dispatch normally; anything else is treated as a task.
     const isKnownCommand = (c) => ['run','replay','webhooks','secrets','prompts','events',
       'tasks','healthz','doctor','init','audit','setup','plugins','telemetry','ask'].includes(c);
-    if (positional.length) {
-      out.cmd = isKnownCommand(positional[0]) ? positional[0] : 'nexus';
-      out.task = positional.slice(out.cmd === 'nexus' ? 0 : 1).join(' ');
-    } else if (argv.length) {
+          // -h (single dash) is a help flag; it must not become a run task.
+          const isHelpPositional = (c) => c === '-h' || c === 'help' || c === '--help';
+          if (positional.length) {
+            if (isHelpPositional(positional[0])) { out.cmd = 'help'; out.task = ''; }
+            else out.cmd = isKnownCommand(positional[0]) ? positional[0] : 'nexus';
+            if (out.cmd !== 'help') out.task = positional.slice(out.cmd === 'nexus' ? 0 : 1).join(' ');
+          } else if (argv.length) {
       out.cmd = out.helpFlag ? 'help' : 'unknown';
       out.unknownArg = argv[0];
     }
@@ -445,9 +448,12 @@ export async function runNexusCli(argv, env = process.env, stdout = console.log,
   }
 
   if (args.cmd === 'run' || (args.task && args.cmd === 'nexus')) {
-      if (!args.task.trim()) { stderr('run: task text required'); return 2; }
-      const ctx = await buildRunCtx({ env, log: { info: stdout, warn: stderr, error: stderr, debug: () => {} } });
-    const agentId = newAgentId();
+        if (!args.task.trim()) { stderr('run: task text required'); return 2; }
+        let ctx;
+        try {
+          ctx = await buildRunCtx({ env, log: { info: stdout, warn: stderr, error: stderr, debug: () => {} } });
+        } catch (e) { stderr(`run: ${e.message || e}`); return 1; }
+      const agentId = newAgentId();
     const taskId = newTaskId();
     const maxSteps = readFlags(args.flags, 'max-steps', 'maxSteps') ?? 16;
     const model = readFlags(args.flags, 'model');
