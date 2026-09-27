@@ -1,13 +1,18 @@
 # Auto-publish @asynx6/nexus-cli to npm on tag v*.
 # Bundles all @nexus/* workspace packages into apps/cli/vendor so the
 # published tarball is self-contained (the workspace packages are private).
+#
+# HARD PREREQUISITE: the full test suite must pass before anything is pushed
+# to the registry. `npm test` fails the whole job on any red test; the publish
+# step only runs `if: success()`, which is false the moment a test fails.
+# This closes the gap that let v0.4.0 ship on red CI.
 name: Publish @asynx6/nexus-cli
 on:
   push:
     tags:
       - 'v*'
 jobs:
-  publish:
+  test-and-publish:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -19,9 +24,15 @@ jobs:
           node-version: 22.x
           cache: 'npm'
           registry-url: 'https://registry.npmjs.org'
-      - name: Bundle into publish copy
-        run: node scripts/bundle-cli.mjs
+      # Generate vendor/ so imports resolve on a clean checkout (it is gitignored).
+      - name: Bundle vendor
+        run: npm ci --no-audit --no-fund && node scripts/bundle-cli.mjs
+      # GATE: if this step fails, the publish step below is skipped and the
+      # job is red. No red-CI ship, ever.
+      - name: Run full test suite (gate)
+        run: npm test
       - name: Publish to npm
+        if: success()
         run: npm publish --access public
         working-directory: apps/cli/_publish
         env:

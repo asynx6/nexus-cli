@@ -3,6 +3,17 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Run integration tests that need a real Docker daemon (sandbox runtime,
+    # permission denial, path traversal, exec timeout). Without this the
+    # sandbox suite silently # SKIPs — the security-sensitive path would be
+    # assumed working rather than proven.
+    services:
+      docker:
+        image: docker:dind
+        options: >-
+          --privileged
+        env:
+          DOCKER_HOST: unix:///var/run/docker.sock
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
