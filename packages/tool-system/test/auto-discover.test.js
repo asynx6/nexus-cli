@@ -39,13 +39,13 @@ test('discoverToolFiles finds *.tools.js and *.tools.mjs, skips others', () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
-test('discoverToolPackages finds @nexus/tool-* in dependencies and devDependencies', () => {
+test('discoverToolPackages finds @asynx6/tool-* in dependencies and devDependencies', () => {
   fresh();
   writeFileSync(join(dir, 'package.json'), JSON.stringify({
-    dependencies: { '@nexus/tool-weather': '^1.0.0', 'other': '^2.0.0' },
-    devDependencies: { '@nexus/tool-lint': '^0.1.0' },
+    dependencies: { '@asynx6/tool-weather': '^1.0.0', 'other': '^2.0.0' },
+    devDependencies: { '@asynx6/tool-lint': '^0.1.0' },
   }));
-  assert.deepEqual(discoverToolPackages(join(dir, 'package.json')).sort(), ['@nexus/tool-lint', '@nexus/tool-weather']);
+  assert.deepEqual(discoverToolPackages(join(dir, 'package.json')).sort(), ['@asynx6/tool-lint', '@asynx6/tool-weather']);
   rmSync(dir, { recursive: true, force: true });
 });
 
@@ -122,11 +122,11 @@ test('autoDiscoverTools skips a tool without a name', async () => {
 test('autoDiscoverTools never throws on an unreadable directory', async () => {
   fresh();
   // no .nexus/tools at all, plus a package.json referencing a missing package
-  writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { '@nexus/tool-missing': '^1.0.0' } }));
+  writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { '@asynx6/tool-missing': '^1.0.0' } }));
   const reg = fakeRegistry();
   const res = await autoDiscoverTools(reg, { cwd: dir });
   assert.equal(res.registered.length, 0);
   assert.equal(res.errors.length, 1);
-  assert.equal(res.errors[0].source, '@nexus/tool-missing');
+  assert.equal(res.errors[0].source, '@asynx6/tool-missing');
   rmSync(dir, { recursive: true, force: true });
 });

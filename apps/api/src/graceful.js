@@ -1,4 +1,4 @@
-// @nexus/api graceful shutdown — SIGTERM/SIGINT triggers orderly close:
+// @asynx6/api graceful shutdown — SIGTERM/SIGINT triggers orderly close:
 //   1. Stop accepting new connections (server.close)
 //   2. Drain in-flight task runs (taskStore.drain)
 //   3. Close the EventStore (flush + release fd)
@@ -7,7 +7,7 @@
 // Re-entrancy: a second signal escalates to immediate exit(1). Users get
 // one chance for a clean shutdown; a stuck task won't trap the process
 // forever.
-import { makeLogger as defaultLogger } from '@nexus/shared';
+import { makeLogger as defaultLogger } from '@asynx6/nexus-shared';
 
 export function installGracefulShutdown({ app, http, logger = defaultLogger, exit = process.exit, signals = ['SIGTERM', 'SIGINT'] } = {}) {
   if (!app) throw new Error('installGracefulShutdown: app required');

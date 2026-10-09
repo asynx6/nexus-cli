@@ -3,8 +3,8 @@
 // --continue resumes the latest session in cwd; --resume <id> picks one.
 import { existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { newId } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { newId } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 export function newSessionId() {
   return newId('session');

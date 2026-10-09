@@ -6,7 +6,7 @@ import {
 } from '../index.js';
 
 test('memory skeleton loads', () => {
-  assert.strictEqual(NAME, '@nexus/memory');
+  assert.strictEqual(NAME, '@asynx6/nexus-memory');
 });
 
 test('makeMemory builds valid records and rejects bad input', () => {

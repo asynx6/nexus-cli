@@ -1,4 +1,4 @@
-// @nexus/event-system — MySQL adapter (optional driver: `mysql2`).
+// @asynx6/event-system — MySQL adapter (optional driver: `mysql2`).
 // Throws a helpful message when `mysql2` is not installed.
 const SCHEME = 'mysql';
 

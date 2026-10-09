@@ -1,4 +1,4 @@
-// @nexus/cli graceful shutdown — wraps long-running subcommands (replay server,
+// @asynx6/cli graceful shutdown — wraps long-running subcommands (replay server,
 // task run) so SIGTERM/SIGINT close cleanly instead of leaving ports bound.
 //
 // Usage:
@@ -7,7 +7,7 @@
 //
 // The handler is re-entrant: a second signal forces exit(1) immediately.
 // `uninstall()` removes the listeners (useful in tests).
-import { makeLogger as defaultLogger } from '@nexus/shared';
+import { makeLogger as defaultLogger } from '@asynx6/nexus-shared';
 
 export function installGracefulShutdown({ onClose, logger = defaultLogger, exit = process.exit, signals = ['SIGTERM', 'SIGINT'], isActive = () => true } = {}) {
   if (typeof onClose !== 'function') throw new Error('installGracefulShutdown: onClose required');

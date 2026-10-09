@@ -1,7 +1,6 @@
 {
-  "name": "@nexus/prompts",
+  "name": "@asynx6/nexus-prompts",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -11,5 +10,12 @@
   "scripts": {
     "test": "node --test"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

@@ -6,7 +6,7 @@ import { mkdtemp, readFile, rm, mkdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { runNexusCli } from '../src/cli.js';
-import { FakeProvider } from '@nexus/model-providers';
+import { FakeProvider } from '@asynx6/nexus-model-providers';
 
 // buildRunCtx reads env for the provider; we inject a fake via a monkey-patched
 // ctx builder is not possible — instead we drive the loop directly through the
@@ -15,8 +15,8 @@ import { FakeProvider } from '@nexus/model-providers';
 // wiring + loop here (the full CLI e2e with a fake gateway lives in
 // test/e2e-fake.test.js).
 import { buildRunCtx, closeCtx } from '../src/ctx.js';
-import { AgentLoop } from '@nexus/agent-runtime';
-import { makeEvent } from '@nexus/event-system';
+import { AgentLoop } from '@asynx6/nexus-agent-runtime';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 test('B1+B2: FakeProvider tool call writes a real file in cwd; events stored', async () => {
   const cwd = await mkdtemp(join(tmpdir(), 'nexus-b1-'));
@@ -60,7 +60,7 @@ test('B1+B2: FakeProvider tool call writes a real file in cwd; events stored', a
     assert.strictEqual(await readFile(join(cwd, 'hello.txt'), 'utf8'), 'hi nexus\n');
 
     // B2: replay shows agent events, not just task.started/ended
-    const { EventStore } = await import('@nexus/event-system');
+    const { EventStore } = await import('@asynx6/nexus-event-system');
     const store = new EventStore(join(cwd, '.nexus/store/events.jsonl'));
     const names = [];
     for await (const e of store.replay({})) names.push(e.name);

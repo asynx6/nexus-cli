@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { EventStore } from '../src/store.js';
 import { makeEvent } from '../src/events.js';
-import { EVENTS, newTaskId } from '@nexus/shared';
+import { EVENTS, newTaskId } from '@asynx6/nexus-shared';
 
 function tempStore() {
   const dir = mkdtempSync(join(tmpdir(), 'nexus-ev-'));

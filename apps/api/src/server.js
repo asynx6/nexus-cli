@@ -12,13 +12,13 @@
 //   NEXUS_GATEWAY_KEY_NAME  override secret name (default 'NEXUS_GATEWAY_KEY')
 
 import { createServer } from 'node:http';
-import { EventBus, EventStore } from '@nexus/event-system';
-import { PermissionManager, AuditTrail, SecretStore } from '@nexus/security';
-import { ToolRegistry, ToolExecutor, fsTools, terminalTools } from '@nexus/tool-system';
-import { DockerRuntime } from '@nexus/sandbox-runtime';
-import { ModelProvider } from '@nexus/model-providers';
-import { AgentLoop, loopTools } from '@nexus/agent-runtime';
-import { loadEnv, makeLogger } from '@nexus/shared';
+import { EventBus, EventStore } from '@asynx6/nexus-event-system';
+import { PermissionManager, AuditTrail, SecretStore } from '@asynx6/nexus-security';
+import { ToolRegistry, ToolExecutor, fsTools, terminalTools } from '@asynx6/nexus-tool-system';
+import { DockerRuntime } from '@asynx6/nexus-sandbox-runtime';
+import { ModelProvider } from '@asynx6/nexus-model-providers';
+import { AgentLoop, loopTools } from '@asynx6/nexus-agent-runtime';
+import { loadEnv, makeLogger } from '@asynx6/nexus-shared';
 import { TaskStore } from './state.js';
 import { createRouter, sendJson } from './router.js';
 import { bearerAuth, compose } from './auth.js';

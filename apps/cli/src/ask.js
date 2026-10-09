@@ -4,8 +4,8 @@
 //
 // --model overrides the primary model. --raw prints the raw completion JSON.
 // Exit 0 on a reply, 1 on a gateway error.
-import { ModelProvider } from '@nexus/model-providers';
-import { DEFAULT_GATEWAY_BASE } from '@nexus/shared';
+import { ModelProvider } from '@asynx6/nexus-model-providers';
+import { DEFAULT_GATEWAY_BASE } from '@asynx6/nexus-shared';
 
 export function parseAskArgs(argv) {
   const flags = {};

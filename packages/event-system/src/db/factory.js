@@ -1,4 +1,4 @@
-// @nexus/event-system — DB adapter factory.
+// @asynx6/event-system — DB adapter factory.
 // Routes a NEXUS_DB_URL to the matching driver (sqlite/postgres/mysql/mongo).
 // Driver modules are dynamically imported so missing optional deps only
 // surface when the user actually asks for that backend.

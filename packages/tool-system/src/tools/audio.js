@@ -1,4 +1,4 @@
-// @nexus/tool-system audio tools — audio.transcribe via OpenAI-compatible
+// @asynx6/tool-system audio tools — audio.transcribe via OpenAI-compatible
 // Whisper API (audio.transcriptions endpoint). The provider is configurable
 // via WHISPER_BASE_URL (default https://api.openai.com/v1) and WHISPER_API_KEY.
 // When no key is set, the tool returns a clear error rather than silently

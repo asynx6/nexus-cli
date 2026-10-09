@@ -2,15 +2,15 @@
 // Keeps imports DOWN-only (no other package imports ../vendor/cli/index.js).
 // Zero external deps. Node ≥22 ESM.
 
-import { loadEnv, makeLogger, DEFAULT_GATEWAY_BASE } from '@nexus/shared';
-import { EventBus, EventStore, makeEvent } from '@nexus/event-system';
-import { ModelProvider } from '@nexus/model-providers';
-import { ToolRegistry, ToolExecutor, fsTools, terminalTools, todoTools, webTools, repoMapTools, autoDiscoverTools } from '@nexus/tool-system';
-import { PermissionManager, AuditTrail, Vault, ProjectSecrets, loadSettings } from '@nexus/security';
-import { HostRuntime, DockerRuntime } from '@nexus/sandbox-runtime';
+import { loadEnv, makeLogger, DEFAULT_GATEWAY_BASE } from '@asynx6/nexus-shared';
+import { EventBus, EventStore, makeEvent } from '@asynx6/nexus-event-system';
+import { ModelProvider } from '@asynx6/nexus-model-providers';
+import { ToolRegistry, ToolExecutor, fsTools, terminalTools, todoTools, webTools, repoMapTools, autoDiscoverTools } from '@asynx6/nexus-tool-system';
+import { PermissionManager, AuditTrail, Vault, ProjectSecrets, loadSettings } from '@asynx6/nexus-security';
+import { HostRuntime, DockerRuntime } from '@asynx6/nexus-sandbox-runtime';
 import { loadPromptStore } from './prompts.js';
-import { AgentLoop, loopTools } from '@nexus/agent-runtime';
-import { loadPlugins } from '@nexus/plugin-registry';
+import { AgentLoop, loopTools } from '@asynx6/nexus-agent-runtime';
+import { loadPlugins } from '@asynx6/nexus-plugin-registry';
 import { join } from 'node:path';
 import { readFileSync, existsSync } from 'node:fs';
 
@@ -121,7 +121,7 @@ export async function buildRunCtx(opts = {}) {
     }
   }
 
-  // A3 auto-discovery: *.tools.js under .nexus/tools + @nexus/tool-* deps.
+  // A3 auto-discovery: *.tools.js under .nexus/tools + @asynx6/tool-* deps.
   // Runs after plugins, so an explicit project tool always wins a name clash.
   const auto = await autoDiscoverTools(registry, { cwd: process.cwd() });
   pluginErrors.push(...auto.errors.map((e) => ({ path: e.source, error: e.error })));
@@ -146,7 +146,7 @@ export async function buildRunCtx(opts = {}) {
   // C2: permission mode gate (hard denylist > rules > mode > interactive ask).
   const settings = opts.policySettings ?? loadSettings(process.cwd());
   const permissionMode = opts.permissionMode ?? settings.permissions?.defaultMode ?? 'ask';
-  const { Checkpointer } = await import('@nexus/tool-system');
+  const { Checkpointer } = await import('@asynx6/nexus-tool-system');
   const checkpointer = new Checkpointer({ root: join(process.cwd(), '.nexus', 'checkpoints'), sessionId: opts.sessionId ?? 'default' });
   // Fase 6b: hooks — reload from disk per call so /permissions edits apply live
   const { runHooks: runHooksFn, loadHooks: loadHooksFn } = await import('./hooks.js');
@@ -164,7 +164,7 @@ export async function buildRunCtx(opts = {}) {
 
   // Fase 6d: agent.spawn — in-process AgentLoop, separate context.
   // Registered after provider/tools exist so the handler gets live refs.
-  const { AgentLoop: Loop } = await import('@nexus/agent-runtime');
+  const { AgentLoop: Loop } = await import('@asynx6/nexus-agent-runtime');
   const { subagentTool } = await import('./subagent.js');
   registry.register(subagentTool({ ctx: { provider, tools, env }, AgentLoop: Loop, maxSubagents: null, executor }));
 

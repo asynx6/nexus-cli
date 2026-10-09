@@ -1,4 +1,4 @@
-// @nexus/event-system replay-server — tiny static HTTP server for the
+// @asynx6/event-system replay-server — tiny static HTTP server for the
 // browser-based event timeline UI. Zero deps (Node http + fs + path only).
 //
 // Endpoints:

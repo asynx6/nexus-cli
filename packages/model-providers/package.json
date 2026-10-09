@@ -1,7 +1,6 @@
 {
-  "name": "@nexus/model-providers",
+  "name": "@asynx6/nexus-model-providers",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -10,5 +9,12 @@
   "description": "ModelProvider interface + openai-compatible & anthropic-compatible adapters",
   "scripts": {
     "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

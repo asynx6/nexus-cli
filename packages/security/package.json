@@ -1,7 +1,6 @@
 {
-  "name": "@nexus/security",
+  "name": "@asynx6/nexus-security",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -12,6 +11,13 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@nexus/event-system": "*"
+    "@asynx6/nexus-event-system": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

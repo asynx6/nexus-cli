@@ -4,9 +4,9 @@
 // timeout. Denials and validation failures are RESULTS, never thrown
 // exceptions, so the agent loop can feed them back to the model (plan P05:
 // "tool tanpa izin ditolak dengan event reason").
-import { EVENTS, newEventId } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
-import { redact } from '@nexus/security';
+import { EVENTS, newEventId } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
+import { redact } from '@asynx6/nexus-security';
 
 /** Escape hatch: emit an event with an arbitrary canonical name. */
 function emit(ctx, name, data) {
@@ -24,8 +24,8 @@ export class ToolExecutor {
 
   /**
    * @param {{ registry: import('./registry.js').ToolRegistry,
-   *   permissions?: import('@nexus/security').PermissionManager,
-   *   audit?: import('@nexus/security').AuditTrail,
+   *   permissions?: import('@asynx6/nexus-security').PermissionManager,
+   *   audit?: import('@asynx6/nexus-security').AuditTrail,
    *   policy?: { mode?: string, settings?: object,
    *     onAsk?: (call: {tool: string, args: object}) => Promise<boolean> } }} opts
    *   permissions/audit optional for pure unit tests; production wiring
@@ -127,7 +127,7 @@ export class ToolExecutor {
 
   /** Permission-mode gate: hard denylist > persistent rules > mode > ask. */
   async #policyGate(tool, args, ctx) {
-    const { isHardDeniedCommand, isHardDeniedPath, isWriteAction, isReadTool, evalRules } = await import('@nexus/security');
+    const { isHardDeniedCommand, isHardDeniedPath, isWriteAction, isReadTool, evalRules } = await import('@asynx6/nexus-security');
     // 1. hard denylist — never bypassed, any mode
     if (tool.name === 'terminal.exec' && isHardDeniedCommand(String(args.command ?? ''))) {
       return { allowed: false, reason: 'hard deny: command is on the blocklist' };

@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { AgentLoop } from '../src/loop.js';
-import { EventBus, EVENTS } from '@nexus/event-system';
+import { EventBus, EVENTS } from '@asynx6/nexus-event-system';
 
 function fakeTools(log = []) {
   return {

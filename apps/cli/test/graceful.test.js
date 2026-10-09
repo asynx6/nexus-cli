@@ -1,4 +1,4 @@
-// @nexus/cli graceful shutdown test — signals trigger clean exit, double-signal escalates.
+// @asynx6/cli graceful shutdown test — signals trigger clean exit, double-signal escalates.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { installGracefulShutdown } from '../src/graceful.js';

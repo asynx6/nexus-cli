@@ -1,6 +1,6 @@
 // Interactive permission prompt for `ask` mode. Non-TTY or EOF => deny.
 // The prompt itself never prints secret-looking values (redact via toString).
-import { PERMISSION_MODES } from '@nexus/security';
+import { PERMISSION_MODES } from '@asynx6/nexus-security';
 
 export function isValidMode(mode) {
   return PERMISSION_MODES.includes(mode);

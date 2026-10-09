@@ -5,7 +5,7 @@
 import { AgentStream } from './stream.js';
 
 export class Handshake {
-  /** @param {import('@nexus/event-system').EventStore} store
+  /** @param {import('@asynx6/nexus-event-system').EventStore} store
    *  @param {string[]} roster all participating agent ids */
   constructor(store, roster) {
     if (!Array.isArray(roster) || roster.length < 2) throw new TypeError('roster needs at least 2 agent ids');

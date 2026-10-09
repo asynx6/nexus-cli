@@ -2,8 +2,8 @@
 // never on the host (plan §5: the agent's files live in the container).
 // read/exec use `exec`; write uses copyIn (tar upload); edit is a
 // read-modify-write with exact-match semantics, like a disciplined sed.
-import { EVENTS } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 import { requireSandbox, safePath } from './_sandbox.js';
 import { unifiedDiff, splitLines } from './diff.js';
 

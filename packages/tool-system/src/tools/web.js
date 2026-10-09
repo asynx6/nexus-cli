@@ -1,8 +1,8 @@
 // web.fetch — GET only, size-capped, domain-allowlisted in settings, and
 // ALWAYS asks permission (never auto-approved, even in auto mode — the
 // policy gate handles that; the tool itself refuses non-GET by design).
-import { EVENTS } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 const MAX_BYTES = 2_000_000; // 2 MiB
 const TIMEOUT_MS = 30_000;

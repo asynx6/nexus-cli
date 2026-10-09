@@ -144,7 +144,7 @@ export class EventStore {
   /**
    * Append one event. Assigns seq, writes the JSONL line now, queues the
    * index row for the next batch commit.
-   * @param {object} event shared envelope from @nexus/shared
+   * @param {object} event shared envelope from @asynx6/shared
    * @returns {object} stored event with assigned seq
    */
   append(event) {

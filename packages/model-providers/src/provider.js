@@ -1,4 +1,4 @@
-// @nexus/model-provider — OpenAI-compatible chat client for the NEXUS gateway.
+// @asynx6/model-provider — OpenAI-compatible chat client for the NEXUS gateway.
 // Zero deps: global fetch + AbortSignal.timeout. No keys in logs, ever.
 // Secrets reach this module only via explicit `apiKey` option (caller pulls
 // from SecretStore / env — plan sec 22).

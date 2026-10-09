@@ -11,8 +11,8 @@
 // spawn (no race). SecretStore handles the gateway key so the loop sees a
 // working provider.
 
-import { EVENTS, newAgentId, newTaskId } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS, newAgentId, newTaskId } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 import { sendJson } from './router.js';
 
 const ALLOWED_TOOLS = new Set([
@@ -36,7 +36,7 @@ export function makeHandlers(deps) {
   /** Build a ModelProvider pulling key from SecretStore (P04 isolation). */
   function providerFromEnv() {
     const mod = globalThis.__nexus_model_providers__;
-    if (!mod) throw new Error("@nexus/model-providers not loaded (server.js must run first)");
+    if (!mod) throw new Error("@asynx6/model-providers not loaded (server.js must run first)");
     const baseUrl = process.env.NEXUS_GATEWAY_BASE;
     if (!baseUrl) throw new Error("NEXUS_GATEWAY_BASE not set");
     const keyName = process.env.NEXUS_GATEWAY_KEY_NAME || "NEXUS_GATEWAY_KEY";

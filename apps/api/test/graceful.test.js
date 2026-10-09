@@ -1,4 +1,4 @@
-// @nexus/api graceful shutdown unit tests. We never bind a real port:
+// @asynx6/api graceful shutdown unit tests. We never bind a real port:
 // everything is stubbed and we drive the lifecycle directly via .close().
 //
 // Test surface:

@@ -1,11 +1,24 @@
 {
-  "name": "@nexus/multi-agent",
+  "name": "@asynx6/nexus-multi-agent",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "main": "index.js",
-  "exports": { ".": "./index.js" },
+  "exports": {
+    ".": "./index.js"
+  },
   "description": "P13 multi-agent coordination: per-agent EventStore streams, handshake, cross-agent messaging",
-  "scripts": { "test": "node --test" },
-  "dependencies": { "@nexus/event-system": "*", "@nexus/shared": "*" }
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-shared": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

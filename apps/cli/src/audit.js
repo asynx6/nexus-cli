@@ -1,6 +1,6 @@
-// @nexus/cli audit subcommand — verify the hash chain of an audit log.
+// @asynx6/cli audit subcommand — verify the hash chain of an audit log.
 // Usage: nexus audit verify [--file=PATH]
-import { verify } from '@nexus/audit';
+import { verify } from '@asynx6/nexus-audit';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 

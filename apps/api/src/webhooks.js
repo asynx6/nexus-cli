@@ -20,7 +20,7 @@
 // table when that becomes a real SLA.
 
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { newId } from '@nexus/shared';
+import { newId } from '@asynx6/nexus-shared';
 
 const SCHEME = /^https?:\/\//i;
 const LOOPBACK = /^(?:127\.\d{1,3}\.\d{1,3}\.\d{1,3}|localhost|\[?::1\]?)$/i;

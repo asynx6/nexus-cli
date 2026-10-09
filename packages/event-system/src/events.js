@@ -1,8 +1,8 @@
-// Contract glue only — the event envelope and taxonomy live in @nexus/shared
+// Contract glue only — the event envelope and taxonomy live in @asynx6/shared
 // (ARCHITECTURE.md rule 1: shared is the single source of contracts).
 // This module adds nothing to the shape; it just wraps construction so callers
 // get a frozen-envelope event with an id/ts defaulted.
-import { EVENTS, EVENT_SCHEMA_VERSION, newEventId } from '@nexus/shared';
+import { EVENTS, EVENT_SCHEMA_VERSION, newEventId } from '@asynx6/nexus-shared';
 
 /** Frozen envelope shape: { id, ts, name, subject, data } (+ seq assigned by the store). */
 export function isEnvelope(e) {

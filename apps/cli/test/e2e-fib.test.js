@@ -34,13 +34,13 @@ test('e2e fibonacci agent (docker + gateway required)', {
   skip: !docker ? 'no docker' : !hasGw ? 'no gateway env' : false,
   timeout: 300_000,
 }, async () => {
-  const { DockerRuntime } = await load('@nexus/sandbox-runtime');
-  const { ModelProvider } = await load('@nexus/model-providers');
-  const { AgentLoop, loopTools } = await load('@nexus/agent-runtime');
-  const { ToolRegistry, ToolExecutor, fsTools, terminalTools } = await load('@nexus/tool-system');
-  const { PermissionManager, AuditTrail } = await load('@nexus/security');
-  const { EventBus, EventStore, EVENTS } = await load('@nexus/event-system');
-  const { newAgentId } = await load('@nexus/shared');
+  const { DockerRuntime } = await load('@asynx6/nexus-sandbox-runtime');
+  const { ModelProvider } = await load('@asynx6/nexus-model-providers');
+  const { AgentLoop, loopTools } = await load('@asynx6/nexus-agent-runtime');
+  const { ToolRegistry, ToolExecutor, fsTools, terminalTools } = await load('@asynx6/nexus-tool-system');
+  const { PermissionManager, AuditTrail } = await load('@asynx6/nexus-security');
+  const { EventBus, EventStore, EVENTS } = await load('@asynx6/nexus-event-system');
+  const { newAgentId } = await load('@asynx6/nexus-shared');
 
   const dir = mkdtempSync(join(tmpdir(), 'nexus-e2e-'));
   const bus = new EventBus();

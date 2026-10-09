@@ -6,10 +6,10 @@ import { test, before, after } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import { ToolRegistry, ToolExecutor, fsTools, terminalTools } from '../index.js';
-import { DockerRuntime } from '@nexus/sandbox-runtime';
-import { EventBus, EventStore } from '@nexus/event-system';
-import { PermissionManager, AuditTrail } from '@nexus/security';
-import { newAgentId } from '@nexus/shared';
+import { DockerRuntime } from '@asynx6/nexus-sandbox-runtime';
+import { EventBus, EventStore } from '@asynx6/nexus-event-system';
+import { PermissionManager, AuditTrail } from '@asynx6/nexus-security';
+import { newAgentId } from '@asynx6/nexus-shared';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 

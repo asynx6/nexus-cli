@@ -1,6 +1,6 @@
-// @nexus/shared — cross-package contracts. This is the ONLY place shared
+// @asynx6/shared — cross-package contracts. This is the ONLY place shared
 // shapes live (ARCHITECTURE.md rule 1). Other packages import down, never up.
-export const NAME = '@nexus/shared';
+export const NAME = '@asynx6/nexus-shared';
 
 export { EVENTS, EVENT_SCHEMA_VERSION } from './events.js';
 export { newAgentId, newSandboxId, newTaskId, newEventId, newId } from './ids.js';

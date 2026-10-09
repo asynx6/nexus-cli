@@ -3,5 +3,5 @@ import assert from 'node:assert';
 import { NAME } from '../index.js';
 
 test('api skeleton loads', () => {
-  assert.strictEqual(NAME, '@nexus/api');
+  assert.strictEqual(NAME, '@asynx6/nexus-api');
 });

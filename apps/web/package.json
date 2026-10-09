@@ -1,5 +1,5 @@
 {
-  "name": "@nexus/web",
+  "name": "@asynx6/web",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@nexus/event-system": "*",
-    "@nexus/security": "*"
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-security": "*"
   }
 }

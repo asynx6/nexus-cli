@@ -206,7 +206,7 @@ test('mcp: real stdio server round-trip', async () => {
 });
 
 test('mcp: registry accepts 3-segment mcp.<srv>.<tool> names', async () => {
-  const { ToolRegistry } = await import('@nexus/tool-system');
+  const { ToolRegistry } = await import('@asynx6/nexus-tool-system');
   const reg = new ToolRegistry();
   reg.register({ name: 'mcp.local.echo', description: 'x', schema: { type: 'object' }, handler: async () => ({ ok: 1 }) });
   assert.ok(reg.list().some((t) => t.name === 'mcp.local.echo'));

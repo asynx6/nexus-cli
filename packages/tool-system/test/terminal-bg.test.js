@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { HostRuntime } from '@nexus/sandbox-runtime';
+import { HostRuntime } from '@asynx6/nexus-sandbox-runtime';
 import { terminalTools, backgroundRegistry } from '../src/tools/terminal.js';
 
 const ctxOf = (root) => ({ runtime: new HostRuntime({ root }), sandboxId: 't', hostRoot: root, agentId: 'a' });

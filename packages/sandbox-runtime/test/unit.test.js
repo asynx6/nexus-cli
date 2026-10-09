@@ -7,7 +7,7 @@ import { tarCreate } from '../lib/tar.js';
 import { NAME } from '../index.js';
 
 test('facade exports', () => {
-  assert.strictEqual(NAME, '@nexus/sandbox-runtime');
+  assert.strictEqual(NAME, '@asynx6/nexus-sandbox-runtime');
 });
 
 function frame(type, payload) {

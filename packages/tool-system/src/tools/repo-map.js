@@ -1,8 +1,8 @@
 // repo.map — lightweight regex symbol map so the agent can grok a large repo
 // without reading every file. JS/TS, Python, Go, Rust, Pawn (.pwn/.inc).
 // Cached in .nexus/cache/repo-map.json keyed by mtime+size of each file.
-import { EVENTS } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 import { requireSandbox, safePath } from './_sandbox.js';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';

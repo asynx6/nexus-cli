@@ -1,4 +1,4 @@
-// @nexus/memory — EventRecall: sqlite index over EventStore.
+// @asynx6/memory — EventRecall: sqlite index over EventStore.
 // Read-mostly filter for past envelopes by subject/name/ts. Zero external deps.
 // Distinct from MemoryManager (which is k-v records with pluggable storage).
 // Both share the same package namespace.

@@ -1,11 +1,11 @@
-import { FakeProvider } from '@nexus/model-providers';
+import { FakeProvider } from '@asynx6/nexus-model-providers';
 import * as cli from '../src/cli.js';
 
 /**
  * Jalankan nexus CLI dengan FakeProvider & working dir temp.
  * @param {string|string[]} argv command line (termasuk 'nexus ...') atau argumen run
  * @param {object} options cwd, provider (array of turns), root
- * @returns {Promise<{exitCode:number, cwd:string, store?:object, provider:import('@nexus/model-providers').FakeProvider}>}
+ * @returns {Promise<{exitCode:number, cwd:string, store?:object, provider:import('@asynx6/nexus-model-providers').FakeProvider}>}
  */
 export async function runNexusCli(argvOrTask, options = {}) {
   const { cwd, storePath, ...rest } = options;

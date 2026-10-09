@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, existsSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { HostRuntime } from '@nexus/sandbox-runtime';
+import { HostRuntime } from '@asynx6/nexus-sandbox-runtime';
 import { Checkpointer } from '../src/checkpoint.js';
 
 function makeCtx(root) {

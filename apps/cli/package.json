@@ -4,13 +4,12 @@
   "description": "Open-source AI Agent Operating Environment CLI: run, replay, tasks, healthz.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/asynx6/nexus-cli"
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
   },
   "homepage": "https://github.com/asynx6/nexus-cli#readme",
   "bugs": {
     "url": "https://github.com/asynx6/nexus-cli/issues"
   },
-  "private": false,
   "type": "module",
   "main": "index.js",
   "bin": {
@@ -46,15 +45,18 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@nexus/agent-runtime": "*",
-    "@nexus/audit": "*",
-    "@nexus/event-system": "*",
-    "@nexus/model-providers": "*",
-    "@nexus/plugin-registry": "*",
-    "@nexus/prompts": "*",
-    "@nexus/security": "*",
-    "@nexus/shared": "*",
-    "@nexus/telemetry": "*",
-    "@nexus/tool-system": "*"
+    "@asynx6/nexus-agent-runtime": "*",
+    "@asynx6/nexus-audit": "*",
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-model-providers": "*",
+    "@asynx6/nexus-plugin-registry": "*",
+    "@asynx6/nexus-prompts": "*",
+    "@asynx6/nexus-security": "*",
+    "@asynx6/nexus-shared": "*",
+    "@asynx6/nexus-telemetry": "*",
+    "@asynx6/nexus-tool-system": "*"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

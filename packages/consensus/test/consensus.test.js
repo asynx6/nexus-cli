@@ -1,4 +1,4 @@
-// Integration tests for @nexus/consensus
+// Integration tests for @asynx6/consensus
 //   - 3 happy-path tests: 2-model majority, 3-model majority, verdict-key vote
 //   - 1 fallback test: all 401 → single-model primary fallback
 //

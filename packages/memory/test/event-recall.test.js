@@ -4,7 +4,7 @@ import assert from 'node:assert';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { EventStore } from '@nexus/event-system';
+import { EventStore } from '@asynx6/nexus-event-system';
 import { EventRecall, openEventRecall } from '../src/event-recall.js';
 
 function tmp() {

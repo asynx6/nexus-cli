@@ -1,7 +1,7 @@
 {
   "name": "@asynx6/nexus-mcp",
   "version": "0.1.0",
-  "description": "Model Context Protocol (MCP) server for NEXUS — exposes agent events and tasks to Claude/Cursor",
+  "description": "Model Context Protocol (MCP) server for NEXUS \u2014 exposes agent events and tasks to Claude/Cursor",
   "type": "module",
   "main": "src/index.js",
   "bin": {
@@ -29,8 +29,15 @@
     "start": "node src/cli.js"
   },
   "dependencies": {
-    "@nexus/event-system": "*",
-    "@nexus/security": "*",
-    "@nexus/shared": "*"
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-security": "*",
+    "@asynx6/nexus-shared": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

@@ -1,8 +1,8 @@
-// Bridge @nexus/tool-system's ToolExecutor into the AgentLoop's tools contract.
+// Bridge @asynx6/tool-system's ToolExecutor into the AgentLoop's tools contract.
 // The executor is the single funnel (validation + permissions + audit +
 // events + timeout); the loop therefore runs WITHOUT its own permission gate
 // when wired through this adapter — no double checks, no double audit rows.
-import { ToolRegistry, ToolExecutor } from '@nexus/tool-system';
+import { ToolRegistry, ToolExecutor } from '@asynx6/nexus-tool-system';
 
 /** OpenAI function names must match ^[a-zA-Z0-9_-]{1,64}$; nexus tool names
  *  use dots (fs.read). Sanitize for the wire, map back on execute. */

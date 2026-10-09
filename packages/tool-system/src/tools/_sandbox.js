@@ -1,7 +1,7 @@
 // Shared plumbing for sandbox-backed tools: resolve the runtime + sandbox
 // from the execution context, and path hygiene for in-container files.
 import path from 'node:path/posix';
-import { hostPath } from '@nexus/sandbox-runtime';
+import { hostPath } from '@asynx6/nexus-sandbox-runtime';
 
 export function requireSandbox(ctx) {
   if (!ctx.runtime || typeof ctx.runtime.exec !== 'function') {

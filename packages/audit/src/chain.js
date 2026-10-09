@@ -1,4 +1,4 @@
-// @nexus/audit — append-only audit log with SHA-256 hash chain.
+// @asynx6/audit — append-only audit log with SHA-256 hash chain.
 // Each entry's prev_hash points to the previous entry's hash, forming a
 // tamper-evident chain. verify() walks the file and checks every link;
 // a single byte change anywhere invalidates everything after it.

@@ -88,7 +88,7 @@ function makeRepo() {
 test('repo.map: symbols across languages, cache on second run', async () => {
   const root = makeRepo();
   const cacheDir = join(root, '.nexus', 'cache');
-  const { HostRuntime } = await import('@nexus/sandbox-runtime');
+  const { HostRuntime } = await import('@asynx6/nexus-sandbox-runtime');
   const rt = new HostRuntime({ root });
   const ctx = { runtime: rt, sandboxId: 't', hostRoot: root, agentId: 'a1' };
   try {

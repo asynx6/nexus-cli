@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { HostRuntime } from '@nexus/sandbox-runtime';
+import { HostRuntime } from '@asynx6/nexus-sandbox-runtime';
 import { fsTools } from '../src/tools/fs.js';
 import { globToRegex } from '../src/tools/fs.js';
 

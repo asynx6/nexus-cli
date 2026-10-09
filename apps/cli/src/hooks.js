@@ -3,7 +3,7 @@
 // exit 2 = block + stderr becomes model feedback; stdout JSON optionally
 // patches input/adds context. No shell unless asked. Per-hook timeout.
 import { spawn } from 'node:child_process';
-import { loadSettings } from '@nexus/security';
+import { loadSettings } from '@asynx6/nexus-security';
 
 export const HOOK_EVENTS = ['PreToolUse', 'PostToolUse', 'UserPromptSubmit', 'Stop', 'SessionStart', 'SessionEnd'];
 const DEFAULT_TIMEOUT_MS = 30_000;

@@ -13,7 +13,7 @@ import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { homedir, tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { PromptRegistry, seedDefaults } from '@nexus/prompts';
+import { PromptRegistry, seedDefaults } from '@asynx6/nexus-prompts';
 
 const STORE_ENV = 'NEXUS_PROMPTS_FILE';
 

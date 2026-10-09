@@ -1,4 +1,4 @@
-// @nexus/event-system — SQLite adapter (default, zero-dep via node:sqlite).
+// @asynx6/event-system — SQLite adapter (default, zero-dep via node:sqlite).
 // Schema lives on the adapter; EventStore keeps its own JSONL index when used
 // as a primary store. The adapter here is the minimum contract other features
 // can build on (audit log, multi-agent store, replay filter).

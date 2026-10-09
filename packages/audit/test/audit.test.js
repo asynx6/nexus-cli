@@ -1,4 +1,4 @@
-// @nexus/audit — hash chain + verify + tamper detection.
+// @asynx6/audit — hash chain + verify + tamper detection.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';

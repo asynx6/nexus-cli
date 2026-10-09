@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { NAME, ToolRegistry, ToolExecutor, fsTools, terminalTools, todoTools, webTools, repoMapTools } from '../index.js';
 
 test('tool-system facade exports', () => {
-  assert.strictEqual(NAME, '@nexus/tool-system');
+  assert.strictEqual(NAME, '@asynx6/nexus-tool-system');
   assert.strictEqual(typeof ToolRegistry, 'function');
   assert.strictEqual(typeof ToolExecutor, 'function');
   assert.strictEqual(fsTools().length, 8);

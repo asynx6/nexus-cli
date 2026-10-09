@@ -1,13 +1,24 @@
 {
-  "name": "@nexus/audit",
+  "name": "@asynx6/nexus-audit",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
     ".": "./index.js"
   },
-  "files": ["index.js", "src/"],
+  "files": [
+    "index.js",
+    "src/"
+  ],
   "description": "Immutable audit log with SHA-256 hash chain; verify walks the file and detects tampering.",
-  "scripts": { "test": "node --test" }
+  "scripts": {
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }

@@ -6,7 +6,7 @@ import { join, resolve } from 'node:path';
 import { hostname, platform, arch } from 'node:os';
 import { version as nodeVersion } from 'node:process';
 import { execFileSync } from 'node:child_process';
-import { DEFAULT_GATEWAY_BASE } from '@nexus/shared';
+import { DEFAULT_GATEWAY_BASE } from '@asynx6/nexus-shared';
 
 export async function runDoctor({ env = process.env, stdout = console.log, exec = execFileSync } = {}) {
   const ok = (label, detail = '') => stdout(`  ok    ${label} ${detail}`);

@@ -5,10 +5,10 @@
 // data.to addressing; delivery is per-recipient (each recipient gets its own
 // copy appended to ITS stream by the delivering stream, so streams stay
 // single-owner and append-only).
-import { makeEvent, isEnvelope } from '@nexus/event-system';
+import { makeEvent, isEnvelope } from '@asynx6/nexus-event-system';
 
 export class AgentStream {
-  /** @param {import('@nexus/event-system').EventStore} store shared store
+  /** @param {import('@asynx6/nexus-event-system').EventStore} store shared store
    *  @param {string} agentId owner of this stream (subject on every event) */
   constructor(store, agentId) {
     if (!store || typeof store.append !== 'function') throw new TypeError('store must be an EventStore');

@@ -3,7 +3,7 @@ import assert from 'node:assert';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { EventBus, EventStore } from '@nexus/event-system';
+import { EventBus, EventStore } from '@asynx6/nexus-event-system';
 import { PermissionManager, AuditTrail, redact } from '../index.js';
 
 test('every decision emits a security.permission_checked event, stored in seq order', () => {

@@ -1,4 +1,4 @@
-// @nexus/event-system — MongoDB adapter (optional driver: `mongodb`).
+// @asynx6/event-system — MongoDB adapter (optional driver: `mongodb`).
 // Throws a helpful message when `mongodb` is not installed.
 const SCHEME = 'mongo';
 

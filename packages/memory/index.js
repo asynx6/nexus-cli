@@ -1,4 +1,4 @@
-// @nexus/memory — short/long/project memory abstraction with pluggable storage.
+// @asynx6/memory — short/long/project memory abstraction with pluggable storage.
 // Contracts (ARCHITECTURE.md rule 4): this index.js exports ONLY interfaces and
 // types — concrete storage backends live in ./src/storages.js.
 export { NAME } from './src/constants.js';

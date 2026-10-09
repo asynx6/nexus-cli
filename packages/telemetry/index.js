@@ -1,4 +1,4 @@
-// @nexus/telemetry — opt-in, redacting, batched usage metrics.
+// @asynx6/telemetry — opt-in, redacting, batched usage metrics.
 // OFF by default. Nothing is collected until the user runs `nexus telemetry on`
 // (or sets NEXUS_TELEMETRY=1). There is no network call in this package —
 // a caller flushes the batch wherever it wants (file, endpoint, or /dev/null).

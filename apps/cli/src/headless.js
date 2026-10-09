@@ -4,9 +4,9 @@
 // 3 max steps reached.
 import { buildRunCtx, closeCtx, AgentLoop } from './ctx.js';
 import { newSessionId, recordSession, emitSessionEvents } from './session.js';
-import { renderCliDefault } from '@nexus/prompts';
-import { newAgentId, newTaskId } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { renderCliDefault } from '@asynx6/nexus-prompts';
+import { newAgentId, newTaskId } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 export async function runHeadless({ task, env = process.env, stdout = process.stdout, stderr = process.stderr, stdin = process.stdin, flags = {} }) {
   // accept both streams and console.log/error-style functions

@@ -1,4 +1,4 @@
-// @nexus/event-system db factory — routing, scheme parsing, SQLite default.
+// @asynx6/event-system db factory — routing, scheme parsing, SQLite default.
 // Pure factory logic only — driver modules are mocked so these tests stay
 // dependency-free (no node:sqlite, no pg, no mysql2, no mongodb in CI).
 import { test } from 'node:test';

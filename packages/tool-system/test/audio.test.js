@@ -1,4 +1,4 @@
-// @nexus/tool-system audio tool tests — pure factory; mock fetch + env.
+// @asynx6/tool-system audio tool tests — pure factory; mock fetch + env.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';

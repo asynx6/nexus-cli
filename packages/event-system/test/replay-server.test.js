@@ -11,7 +11,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { setTimeout as delay } from 'node:timers/promises';
 import { EventStore, makeEvent } from '../index.js';
-import { EVENTS, newTaskId } from '@nexus/shared';
+import { EVENTS, newTaskId } from '@asynx6/nexus-shared';
 import { createReplayServer, parseSearch } from '../replay-server.js';
 
 function here() { return resolve(fileURLToPath(import.meta.url), '..'); }

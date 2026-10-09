@@ -106,7 +106,7 @@ export function makeWebhookHandlers(deps) {
     async testWebhook(ctx) {
       const wh = registry.get(ctx.params.id);
       if (!wh) return sendJson(ctx.res, 404, { error: 'not_found' });
-      const { makeEvent } = await import('@nexus/event-system');
+      const { makeEvent } = await import('@asynx6/nexus-event-system');
       const ev = makeEvent('webhook.test', { webhookId: wh.id, url: wh.url, at: new Date().toISOString() }, null);
       deps.bus.emit(ev);
       sendJson(ctx.res, 202, { id: wh.id, eventId: ev.id, status: 'sent' });

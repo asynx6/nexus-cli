@@ -1,4 +1,4 @@
-// @nexus/web — minimal web dashboard.
+// @asynx6/web — minimal web dashboard.
 // Issue #18: 1 file HTML inline script + tiny HTTP server. Port 3300.
 // Live: list recent runs (grouped by subject from EventStore) + per-run timeline + payload JSON.
 // Auth via SecretStore: token env var name passed at construction; SecretStore.value loaded at startup.
@@ -9,8 +9,8 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { join, dirname, resolve, normalize, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { EventStore } from '@nexus/event-system';
-import { SecretStore } from '@nexus/security';
+import { EventStore } from '@asynx6/nexus-event-system';
+import { SecretStore } from '@asynx6/nexus-security';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const PUBLIC_DIR = resolve(__dirname, '..', 'public');
@@ -111,7 +111,7 @@ async function handle(req, res, ctx) {
   }
 
   if (method === 'GET' && url.pathname === '/healthz') {
-    respond(res, 200, { ok: true, name: '@nexus/web', events: ctx.store.count() });
+    respond(res, 200, { ok: true, name: '@asynx6/web', events: ctx.store.count() });
     return;
   }
 

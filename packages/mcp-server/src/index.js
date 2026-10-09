@@ -3,7 +3,7 @@
 // Compatible with Claude Code, Cursor, and other MCP-aware clients.
 // Usage: node src/cli.js [stdio|http] [--port 9090] [--event-store ./events.jsonl]
 
-import { EventStore } from '@nexus/event-system';
+import { EventStore } from '@asynx6/nexus-event-system';
 import { readFileSync, existsSync, appendFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';

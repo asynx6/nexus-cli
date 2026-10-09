@@ -24,7 +24,7 @@ for (const [dir, desc] of Object.entries(pkgs)) {
       pkgJson,
       JSON.stringify(
         {
-          name: '@nexus/' + name,
+          name: '@asynx6/' + name,
           version: '0.0.1',
           private: true,
           type: 'module',
@@ -40,12 +40,12 @@ for (const [dir, desc] of Object.entries(pkgs)) {
   }
   const idx = join(dir, 'index.js');
   if (!existsSync(idx)) {
-    writeFileSync(idx, `// @nexus/${name} — ${desc}\n// public facade: export ONLY contracts here (see docs/ARCHITECTURE.md rule 4)\nexport const NAME = '@nexus/${name}';\n`);
+    writeFileSync(idx, `// @asynx6/${name} — ${desc}\n// public facade: export ONLY contracts here (see docs/ARCHITECTURE.md rule 4)\nexport const NAME = '@asynx6/${name}';\n`);
   }
   mkdirSync(join(dir, 'test'), { recursive: true });
   const t = join(dir, 'test', 'smoke.test.js');
   if (!existsSync(t)) {
-    writeFileSync(t, `import { test } from 'node:test';\nimport assert from 'node:assert';\nimport { NAME } from '../index.js';\n\ntest('${name} skeleton loads', () => {\n  assert.strictEqual(NAME, '@nexus/${name}');\n});\n`);
+    writeFileSync(t, `import { test } from 'node:test';\nimport assert from 'node:assert';\nimport { NAME } from '../index.js';\n\ntest('${name} skeleton loads', () => {\n  assert.strictEqual(NAME, '@asynx6/${name}');\n});\n`);
   }
   console.log('ok', dir);
 }

@@ -14,7 +14,7 @@
 //      majority = 2; with 4, majority = 3. With 5, majority = 3.
 //   3. The winner's full response (model + content + tool_call) is what chat() returns.
 
-import { EVENTS, makeEvent } from '@nexus/event-system';
+import { EVENTS, makeEvent } from '@asynx6/nexus-event-system';
 
 /** Parse NEXUS_CONSENSUS_MODELS env into a clean string[]. */
 export function parseConsensusModels(env) {

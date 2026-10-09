@@ -15,8 +15,8 @@
 //
 // Returns: { description, model, usage?, mime, bytes, source }
 
-import { EVENTS } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 const MAX_RAW_BYTES = 4 * 1024 * 1024;
 const MAX_FILE_BYTES = 8 * 1024 * 1024;

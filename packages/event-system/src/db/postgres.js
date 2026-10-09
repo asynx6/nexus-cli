@@ -1,4 +1,4 @@
-// @nexus/event-system — PostgreSQL adapter (optional driver: `pg`).
+// @asynx6/event-system — PostgreSQL adapter (optional driver: `pg`).
 // Throws a helpful message when `pg` is not installed; users opt in via
 // `npm install pg` then set NEXUS_DB_URL=postgres://...
 const SCHEME = 'postgres';

@@ -8,10 +8,10 @@ import { renderSkillIndex, loadSkills } from './skills.js';
 import { resolveSlash, loadCustomCommands, BUILTIN_SLASH } from './slash.js';
 import { buildRunCtx, closeCtx, AgentLoop } from './ctx.js';
 import { newSessionId, recordSession, findSession, emitSessionEvents, replaySessionHistory } from './session.js';
-import { renderCliDefault } from '@nexus/prompts';
+import { renderCliDefault } from '@asynx6/nexus-prompts';
 import { join, basename } from 'node:path';
-import { newAgentId } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { newAgentId } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 const SPINNER = ['|', '/', '-', '\\'];
 
@@ -433,7 +433,7 @@ export async function runRepl({ env = process.env, stdout = process.stdout, stde
           return 0;
         }
         case '/memory': {
-          const { MemoryManager, JsonlStorage } = await import('@nexus/memory');
+          const { MemoryManager, JsonlStorage } = await import('@asynx6/nexus-memory');
           const mm = new MemoryManager({
             storage: new JsonlStorage(join(process.cwd(), '.nexus', 'memory', 'project.jsonl')),
             emit: (e) => ctx.bus.emit(makeEvent(e.name, e.data, sessionId)),
@@ -512,7 +512,7 @@ export async function runRepl({ env = process.env, stdout = process.stdout, stde
           // scan the repo and scaffold NEXUS.md (does not overwrite)
           const existing = findProjectDoc(process.cwd());
           if (existing) { renderer.info(`already present: ${existing.path}`); return 0; }
-          const { extractSymbols } = await import('@nexus/tool-system');
+          const { extractSymbols } = await import('@asynx6/nexus-tool-system');
           const { readdirSync, writeFileSync, readFileSync } = await import('node:fs');
           const files = [];
           const walk = (d, prefix = '') => {

@@ -1,7 +1,7 @@
 // Audit trail: every permission decision becomes an event on the EventBus
 // (plan sec 6: "Setiap tool invocation harus dapat menghasilkan audit event").
 // Uses the approved custom-type convention (dot.separated_kind), security.* namespace.
-import { makeEvent } from '@nexus/event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 const SECRET_RE = /(token|secret|password|passwd|api[-_]?key|authorization)/i;
 // a secret-looking ASSIGNMENT line: "password: x", "api_key=y", "Bearer xyz"
@@ -43,7 +43,7 @@ export class AuditTrail {
   #runId;
 
   /**
-   * @param {{ bus: import('@nexus/event-system').EventBus, runId: string }} opts
+   * @param {{ bus: import('@asynx6/nexus-event-system').EventBus, runId: string }} opts
    */
   constructor({ bus, runId }) {
     if (!bus || typeof bus.emit !== 'function') throw new TypeError('bus with emit required');

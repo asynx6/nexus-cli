@@ -1,19 +1,25 @@
 {
-  "name": "@nexus/agent-runtime",
+  "name": "@asynx6/nexus-agent-runtime",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
     ".": "./index.js"
   },
-  "description": "agent loop: observe → plan → tool → execute → memory-update → continue",
+  "description": "agent loop: observe \u2192 plan \u2192 tool \u2192 execute \u2192 memory-update \u2192 continue",
   "scripts": {
     "test": "node --test"
   },
   "dependencies": {
-    "@nexus/event-system": "*",
-    "@nexus/tool-system": "*",
-    "@nexus/security": "*"
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-tool-system": "*",
+    "@asynx6/nexus-security": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

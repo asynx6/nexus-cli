@@ -2,9 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { loopTools } from '../src/bridge.js';
 import { AgentLoop } from '../src/loop.js';
-import { ToolRegistry, ToolExecutor } from '@nexus/tool-system';
-import { PermissionManager, AuditTrail } from '@nexus/security';
-import { EventBus } from '@nexus/event-system';
+import { ToolRegistry, ToolExecutor } from '@asynx6/nexus-tool-system';
+import { PermissionManager, AuditTrail } from '@asynx6/nexus-security';
+import { EventBus } from '@asynx6/nexus-event-system';
 
 function setup({ allowed = true } = {}) {
   const reg = new ToolRegistry();

@@ -7,7 +7,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { WebhookRegistry, Webhook, startDeliveryEngine, signBody, verifySignature, validateTarget } from '../src/webhooks.js';
-import { EventBus, makeEvent } from '@nexus/event-system';
+import { EventBus, makeEvent } from '@asynx6/nexus-event-system';
 import { callApi, FakeRuntime } from './helpers.js';
 import { buildApp } from '../src/server.js';
 

@@ -1,7 +1,6 @@
 {
-  "name": "@nexus/tool-system",
+  "name": "@asynx6/nexus-tool-system",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -12,9 +11,16 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@nexus/event-system": "*",
-    "@nexus/sandbox-runtime": "*",
-    "@nexus/security": "*",
-    "@nexus/shared": "*"
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-sandbox-runtime": "*",
+    "@asynx6/nexus-security": "*",
+    "@asynx6/nexus-shared": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

@@ -6,8 +6,8 @@ import { mkdtempSync, rmSync, writeFileSync, existsSync, readFileSync } from 'no
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createServer } from '../src/server.js';
-import { EventStore } from '@nexus/event-system';
-import { makeEvent } from '@nexus/event-system';
+import { EventStore } from '@asynx6/nexus-event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 function tmp() {
   const dir = mkdtempSync(join(tmpdir(), 'nexus-web-'));
@@ -43,7 +43,7 @@ test('healthz is open and reports event count', async () => {
       assert.strictEqual(r.status, 200);
       const j = await r.json();
       assert.strictEqual(j.ok, true);
-      assert.strictEqual(j.name, '@nexus/web');
+      assert.strictEqual(j.name, '@asynx6/web');
       assert.ok(j.events >= 1);
     } finally { await srv.close(); }
   } finally { rmSync(dir, { recursive: true, force: true }); }

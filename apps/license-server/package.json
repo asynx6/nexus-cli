@@ -1,5 +1,5 @@
 {
-  "name": "@nexus/license-server",
+  "name": "@asynx6/license-server",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -13,7 +13,7 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@nexus/shared": "*",
-    "@nexus/security": "*"
+    "@asynx6/nexus-shared": "*",
+    "@asynx6/nexus-security": "*"
   }
 }

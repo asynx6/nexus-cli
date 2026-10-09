@@ -2,13 +2,13 @@
 // permission gate -> tool execute -> feed results back -> repeat until final
 // answer or maxSteps. Every step emits events on the EventBus (sec 11).
 //
-// ToolManager contract (implemented by @nexus/tool-system, mocked in tests):
+// ToolManager contract (implemented by @asynx6/tool-system, mocked in tests):
 //   list() -> [{ name, description, parameters }]        // JSON schemas
 //   execute(name, args, ctx) -> { ok, output } | throws  // ctx: { agentId, sandbox }
-// Permission contract (@nexus/security PermissionManager):
+// Permission contract (@asynx6/security PermissionManager):
 //   check(agentId, tool, args) -> { allowed, reason, ... }
 
-import { EVENTS, makeEvent } from '@nexus/event-system';
+import { EVENTS, makeEvent } from '@asynx6/nexus-event-system';
 
 export class AgentLoop {
   #provider; #tools; #permissions; #audit; #bus; #model; #verdictShortcut;

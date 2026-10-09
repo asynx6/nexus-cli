@@ -1,14 +1,14 @@
 // Cluster supervisor: spawns workers, distributes tasks, recovers on failure.
-// Uses @nexus/multi-agent.Cluster for membership + leader election + queue;
+// Uses @asynx6/multi-agent.Cluster for membership + leader election + queue;
 // the supervisor IS the leader that assigns tasks. Workers register their
 // availability; when one dies, its claimed tasks go back on the queue.
 //
 // One supervisor instance per process. The leader process runs the schedule;
 // followers idle (a real deployment runs one supervisor per node and lets
 // Cluster pick the leader).
-import { Cluster } from '@nexus/multi-agent';
-import { AgentStream } from '@nexus/multi-agent';
-import { makeEvent } from '@nexus/event-system';
+import { Cluster } from '@asynx6/nexus-multi-agent';
+import { AgentStream } from '@asynx6/nexus-multi-agent';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 export class Supervisor {
   /**

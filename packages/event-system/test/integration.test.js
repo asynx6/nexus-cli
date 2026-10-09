@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { EventBus } from '../src/bus.js';
 import { EventStore } from '../src/store.js';
 import { makeEvent } from '../src/events.js';
-import { EVENTS } from '@nexus/shared';
+import { EVENTS } from '@asynx6/nexus-shared';
 
 test('bus fan-out: live listeners + durable store, then replay matches', () => {
   const dir = mkdtempSync(join(tmpdir(), 'nexus-int-'));

@@ -1,10 +1,10 @@
-// Bearer-token auth wired to @nexus/security SecretStore. The token is
+// Bearer-token auth wired to @asynx6/security SecretStore. The token is
 // never logged (P04 secret isolation). On miss we send 401 with a generic
 // reason — no details that help an attacker distinguish bad vs missing token.
 import { safeStringEqual } from './router.js';
 
 /**
- * @param {{ secrets: import('@nexus/security').SecretStore, name?: string }} opts
+ * @param {{ secrets: import('@asynx6/nexus-security').SecretStore, name?: string }} opts
  *   name: secret name to look up. Default: 'NEXUS_API_TOKEN'.
  */
 export function bearerAuth({ secrets, name = 'NEXUS_API_TOKEN' } = {}) {

@@ -1,4 +1,4 @@
-// @nexus/cli audit command — integration tests against runAudit.
+// @asynx6/cli audit command — integration tests against runAudit.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtempSync, rmSync, writeFileSync, readFileSync } from 'node:fs';

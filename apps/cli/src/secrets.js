@@ -13,7 +13,7 @@
 
 import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync, writeSync, readSync } from 'node:fs';
 import { join } from 'node:path';
-import { Vault, ProjectSecrets } from '@nexus/security';
+import { Vault, ProjectSecrets } from '@asynx6/nexus-security';
 
 const PASS_ENV = 'NEXUS_PROJECT_PASSPHRASE';
 const STORE_ENV = 'NEXUS_PROJECT_SECRETS_FILE';

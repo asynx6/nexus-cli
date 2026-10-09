@@ -1,11 +1,11 @@
 // `nexus replay diff <left> <right>` — compare two runs in the event store
-// (TASK-LEONARS-B3). Reads both subjects, aligns them with @nexus/event-system
+// (TASK-LEONARS-B3). Reads both subjects, aligns them with @asynx6/event-system
 // diffRuns, prints a compact unified report. --json emits the raw op list.
 //
 // ponytail: subjects are matched by exact id; a fuzzier run picker (latest N
 // runs, --last) is out of scope until the store indexes runs as a set.
 
-import { diffRuns, summarize } from '@nexus/event-system';
+import { diffRuns, summarize } from '@asynx6/nexus-event-system';
 
 export const REPLAY_DIFF_HELP = `nexus replay diff <left> <right> [--json] [--limit=N]  compare two runs event-by-event
                                                           left/right are subject ids (task ids).

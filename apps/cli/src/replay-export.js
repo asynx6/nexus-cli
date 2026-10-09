@@ -1,7 +1,7 @@
 // Replay export (Fase 6i): a standalone single-file HTML timeline of a
 // session — messages, tool cards, colored diffs, durations, tokens, audit
 // hash chain. No CDN, inline CSS only.
-import { makeEvent } from '@nexus/event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 function esc(s) {
   return String(s ?? '')

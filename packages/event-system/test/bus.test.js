@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { EventBus } from '../src/bus.js';
 import { makeEvent } from '../src/events.js';
-import { EVENTS } from '@nexus/shared';
+import { EVENTS } from '@asynx6/nexus-shared';
 
 test('routes by name, once, wildcard, unsubscribe', () => {
   const bus = new EventBus();

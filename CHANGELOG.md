@@ -31,7 +31,7 @@ previously-skipped sandbox integration tests actually execute.
 
 ## [0.4.0] — 2026-09-27
 - A→H sprint feature complete: cluster supervisor (A1), memory wired (A2), tool
-  auto-discovery (A3), prompt versioning consolidated to `@nexus/prompts` (A4), webhook
+  auto-discovery (A3), prompt versioning consolidated to `@asynx6/prompts` (A4), webhook
   receiver (D2), per-project encrypted secrets (E1), rate limiting (E3), file
   upload/download (F3), Kubernetes-style `/live` `/ready` probes (G4), opt-in telemetry
   (H2), plugin registry (H3), `nexus ask` (C4).
@@ -39,15 +39,15 @@ previously-skipped sandbox integration tests actually execute.
   fix because the release did not gate on CI.
 
 ## [0.3.6] — 2026-09-21
-- Consumer packaging fixes: dynamic `import('@nexus/event-system')` in `events compact`
+- Consumer packaging fixes: dynamic `import('@asynx6/event-system')` in `events compact`
   now rewritten by the bundler (was `ERR_MODULE_NOT_FOUND` on clean install).
 
 ## [0.3.5] — 2026-09-21
 - `events compact` EBADF + `--keep-recent` off-by-one fix (PR #63).
 
 ## [0.3.4] — 2026-09-21
-- Packaging: stage `apps/cli/_publish`, rewrite `@nexus/*` in both `vendor/` and `src/`
-  (was `ERR_MODULE_NOT_FOUND: @nexus/audit` on clean install).
+- Packaging: stage `apps/cli/_publish`, rewrite `@asynx6/*` in both `vendor/` and `src/`
+  (was `ERR_MODULE_NOT_FOUND: @asynx6/audit` on clean install).
 
 ## [0.3.3] — 2026-09-21
 - Consumer bug fixes from crew testing: `init`/`run` crashes, replay 404, false-green

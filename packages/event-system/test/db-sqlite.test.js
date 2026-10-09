@@ -1,4 +1,4 @@
-// @nexus/event-system — SQLite driver end-to-end (real node:sqlite, in-memory).
+// @asynx6/event-system — SQLite driver end-to-end (real node:sqlite, in-memory).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createDbAdapter } from '../src/db/factory.js';

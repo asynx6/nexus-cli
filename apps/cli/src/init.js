@@ -1,4 +1,4 @@
-// @nexus/cli init — scaffold a new NEXUS project skeleton.
+// @asynx6/cli init — scaffold a new NEXUS project skeleton.
 // Zero deps. Pure node:fs + node:path.
 //
 // Usage (called by cli.js dispatcher):
@@ -116,19 +116,19 @@ npm run -- run "your task here"
 `;
 
 const APPS_CLI_PKG = `{
-  "name": "@nexus/cli-app",
+  "name": "@asynx6/cli-app",
   "version": "0.1.0",
   "type": "module",
   "main": "src/cli.js",
   "private": true,
   "dependencies": {
-    "@nexus/cli": "*"
+    "@asynx6/cli": "*"
   }
 }
 `;
 
 const SHARED_PKG = `{
-  "name": "@nexus/shared",
+  "name": "@asynx6/nexus-shared",
   "version": "0.1.0",
   "type": "module",
   "main": "index.js",
@@ -136,7 +136,7 @@ const SHARED_PKG = `{
 }
 `;
 
-const SHARED_INDEX = `// @nexus/shared — placeholder for shared ids + types.\nexport const NAME = '@nexus/shared';\n`;
+const SHARED_INDEX = `// @asynx6/shared — placeholder for shared ids + types.\nexport const NAME = '@asynx6/nexus-shared';\n`;
 
 const GITIGNORE = `node_modules/
 .env-gateway

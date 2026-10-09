@@ -1,5 +1,5 @@
 // Context budget + compaction (Fase 5).
-import { makeEvent } from '@nexus/event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 const DEFAULT_WINDOW = 128_000;
 const COMPACT_AT = 0.8;
@@ -50,7 +50,7 @@ export function shouldCompact(messages, env = process.env) {
  * @param {string} p.sessionId
  * @param {object} [p.bus]
  * @param {string} [p.instructions] extra compaction guidance (/compact arg)
- * @param {import('@nexus/model-providers').ModelProvider} [p.provider]
+ * @param {import('@asynx6/nexus-model-providers').ModelProvider} [p.provider]
  */
 export async function compactHistory({ messages, provider, sessionId, bus, instructions = '', model = null }) {
   if (!provider || typeof provider.chat !== 'function') throw new TypeError('provider with chat() required');

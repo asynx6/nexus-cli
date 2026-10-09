@@ -1,10 +1,10 @@
 // Bundle workspace deps into a self-contained publish directory.
-// The published CLI imports packages/* via @nexus/* specifiers that only resolve
+// The published CLI imports packages/* via @asynx6/* specifiers that only resolve
 // in the monorepo (symlinks + workspace install). They do NOT exist for a
 // consumer, so the tarball would E404 / ERR_MODULE_NOT_FOUND.
 //
 // Fix: stage a publish copy at apps/cli/_publish/, generate vendor/ inside it,
-// and rewrite every @nexus/* import (vendor cross-imports AND src/* imports)
+// and rewrite every @asynx6/* import (vendor cross-imports AND src/* imports)
 // to relative ../vendor/<pkg>/index.js paths. The source tree is left untouched.
 import { cpSync, mkdirSync, rmSync, writeFileSync, readFileSync, existsSync, readdirSync, statSync, symlinkSync } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -47,11 +47,11 @@ for (const name of PKGS) {
   console.log(`vendored ${name}`);
 }
 
-// --- 3. Rewrite @nexus/<pkg> specifiers to relative vendor paths ---
+// --- 3. Rewrite @asynx6/<pkg> specifiers to relative vendor paths ---
 // Matches import/export-from and bare import statements only, so template
-// literals that legitimately mention @nexus/* (scaffolded project output) stay intact.
+// literals that legitimately mention @asynx6/* (scaffolded project output) stay intact.
 // Matches static import/export-from, bare import, AND dynamic import('...'),
-// so a runtime await import('@nexus/x') in the publish copy resolves too.
+// so a runtime await import('@asynx6/x') in the publish copy resolves too.
 const SPEC_RE = /((?:^|\n)(?:import|export)[^\n]*?\bfrom\s*|(?:^|\n)import\s*|(?:^|\n|[^\w.])\bimport\(\s*)(['"])@nexus\/([a-z-]+)(\/[^\s'"]*)?/g;
 
 // dir: directory to walk; baseDir: what depth is measured from;
@@ -80,8 +80,8 @@ rewriteDir(pubVendor, pubVendor, true);
 rewriteDir(join(pub, 'src'), pub, false);
 rewriteDir(pub, pub, false);
 
-// --- 4. Dev shims: symlink apps/cli/node_modules/@nexus/<pkg> -> packages/<pkg>
-// so the source tree (not the publish copy) resolves @nexus/* during npm test.
+// --- 4. Dev shims: symlink apps/cli/node_modules/@asynx6/<pkg> -> packages/<pkg>
+// so the source tree (not the publish copy) resolves @asynx6/* during npm test.
 // Never lands in the tarball: _publish has no symlinks.
 const nm = join(cli, 'node_modules');
 const scopeDir = join(nm, '@nexus');

@@ -2,21 +2,21 @@
 // Zero deps. Returns exit code.
 
 import { buildRunCtx, buildReplayCtx, closeCtx, AgentLoop } from './ctx.js';
-import { loadEnv, DEFAULT_GATEWAY_BASE } from '@nexus/shared';
-import { loadPlugins } from '@nexus/plugin-registry';
-import { isTelemetryEnabled, setTelemetryEnabled } from '@nexus/telemetry';
-import { renderCliDefault } from '@nexus/prompts';
+import { loadEnv, DEFAULT_GATEWAY_BASE } from '@asynx6/nexus-shared';
+import { loadPlugins } from '@asynx6/nexus-plugin-registry';
+import { isTelemetryEnabled, setTelemetryEnabled } from '@asynx6/nexus-telemetry';
+import { renderCliDefault } from '@asynx6/nexus-prompts';
 import { runDoctor, runDoctorFix } from './doctor.js';
 import { runSetup } from './setup.js';
 import { runAudit } from './audit.js';
 import { scaffoldProject, parseInitArgs, promptInitAnswers } from './init.js';
 import { installGracefulShutdown as installCliGraceful } from './graceful.js';
-import { makeEvent } from '@nexus/event-system';
-import { newAgentId, newTaskId } from '@nexus/shared';
-import { createReplayServer } from '@nexus/event-system/replay-server.js';
+import { makeEvent } from '@asynx6/nexus-event-system';
+import { newAgentId, newTaskId } from '@asynx6/nexus-shared';
+import { createReplayServer } from '@asynx6/nexus-event-system/replay-server.js';
 import { runReplayDiff } from './replaydiff.js';
 import { runWebhooks, WEBHOOKS_HELP } from './webhooks.js';
-import { PERMISSION_MODES } from '@nexus/security';
+import { PERMISSION_MODES } from '@asynx6/nexus-security';
 import { isValidMode, makePermissionPrompt } from './permissions-prompt.js';
 import { newSessionId, recordSession, findSession, loadSessionIndex, saveSessionIndex, emitSessionEvents, replaySessionHistory } from './session.js';
 import { runRepl } from './repl.js';
@@ -432,7 +432,7 @@ export async function runNexusCli(argv, env = process.env, stdout = console.log,
       return 2;
     }
     const storePath = args.flags.store;
-    const { compact, EventStore } = await import('@nexus/event-system');
+    const { compact, EventStore } = await import('@asynx6/nexus-event-system');
     const { buildReplayCtx } = await import('./ctx.js');
     const ctx = storePath
       ? { store: { open: async () => new EventStore(storePath) } }
@@ -580,7 +580,7 @@ export async function runNexusCli(argv, env = process.env, stdout = console.log,
       }
     }
     if (typeof promptRef === 'string' && promptRef) {
-      if (!ctx.prompts) throw new Error('prompts registry unavailable (buildRunCtx did not wire @nexus/prompts)');
+      if (!ctx.prompts) throw new Error('prompts registry unavailable (buildRunCtx did not wire @asynx6/prompts)');
       const [pName, pHash] = promptRef.split('@');
       const v = ctx.prompts.resolve(pName, pHash ?? null);
       if (!v) throw new Error(`unknown prompt reference: ${promptRef}`);

@@ -1,4 +1,4 @@
-// @nexus/security rate limiter — token-bucket + sliding-window, zero deps.
+// @asynx6/security rate limiter — token-bucket + sliding-window, zero deps.
 // Use to throttle model-provider calls, tool invocations, or API endpoints.
 //
 // Token bucket: burst capacity, refilled at a steady rate. Best for APIs

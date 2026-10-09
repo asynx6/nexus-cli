@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { EventStore } from '@nexus/event-system';
+import { EventStore } from '@asynx6/nexus-event-system';
 import { Handshake } from '../index.js';
 
 function fresh() {

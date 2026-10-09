@@ -1,8 +1,8 @@
 // todo.write — the agent's task list. State lives in the event store via
 // EVENTS.TODO_WRITTEN and is mirrored to .nexus/todo.json so the REPL can
 // render it instantly. Zero runtime deps.
-import { EVENTS } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 

@@ -1,4 +1,4 @@
-// @nexus/plugin-registry — discover and load third-party tool plugins.
+// @asynx6/plugin-registry — discover and load third-party tool plugins.
 // A plugin is any module exporting { name, tools?(), hooks? }.
 //
 // Discovery order per directory: <dir>/*.js, then <dir>/<name>/index.js.

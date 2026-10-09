@@ -7,8 +7,8 @@ import assert from 'node:assert';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { EventBus, EventStore, makeEvent } from '@nexus/event-system';
-import { MemoryManager, JsonlStorage, EventRecall, openEventRecall } from '@nexus/memory';
+import { EventBus, EventStore, makeEvent } from '@asynx6/nexus-event-system';
+import { MemoryManager, JsonlStorage, EventRecall, openEventRecall } from '@asynx6/nexus-memory';
 
 test('memory + event-system integration: remember → emit → recall', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'nexus-int-'));

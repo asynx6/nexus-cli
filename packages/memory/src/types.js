@@ -2,7 +2,7 @@
 // short-term (conversation context, tool results — volatile, per-session),
 // long-term (important facts, previous decisions — durable across sessions),
 // project (project information, generated artifacts — scoped to a project id).
-import { newId } from '@nexus/shared';
+import { newId } from '@asynx6/nexus-shared';
 
 export const MemoryKind = Object.freeze({
   SHORT: 'short',

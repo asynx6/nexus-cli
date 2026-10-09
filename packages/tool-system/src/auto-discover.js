@@ -1,10 +1,10 @@
-// @nexus/tool-system auto-discovery — register tools without a manual list.
+// @asynx6/tool-system auto-discovery — register tools without a manual list.
 //
 // Three sources, in priority order (first registration wins, later duplicates
 // are skipped so an explicit project tool always beats a package one):
 //   1. explicit tools passed by the caller (already registered by ctx)
 //   2. *.tools.js files under .nexus/tools/ in the project
-//   3. @nexus/tool-* dependencies listed in package.json, exporting { tools }
+//   3. @asynx6/tool-* dependencies listed in package.json, exporting { tools }
 //
 // (2) and (3) are the auto part: drop a file or install a package and the
 // tool is available on the next run. Discovery errors never abort the run.
@@ -14,7 +14,7 @@ import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const TOOLS_DIR = '.nexus/tools';
-const TOOL_PKG_PREFIX = '@nexus/tool-';
+const TOOL_PKG_PREFIX = '@asynx6/tool-';
 
 /** Read package.json deps that look like tool packages. */
 export function discoverToolPackages(pkgPath = 'package.json') {

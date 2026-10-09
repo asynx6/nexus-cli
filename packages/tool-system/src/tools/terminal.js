@@ -1,10 +1,10 @@
 // terminal.exec — run a command inside the sandbox via SandboxRuntime.exec.
 // Secrets (ctx.env) are injected at exec time only (P04 isolation): they
 // reach the process environment, never args, events, or disk.
-import { EVENTS } from '@nexus/shared';
-import { makeEvent } from '@nexus/event-system';
+import { EVENTS } from '@asynx6/nexus-shared';
+import { makeEvent } from '@asynx6/nexus-event-system';
 import { requireSandbox } from './_sandbox.js';
-import { hostPath } from '@nexus/sandbox-runtime';
+import { hostPath } from '@asynx6/nexus-sandbox-runtime';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 

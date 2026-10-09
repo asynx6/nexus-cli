@@ -4,8 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { ToolRegistry, ToolExecutor } from '../index.js';
-import { EventBus } from '@nexus/event-system';
-import { PermissionManager } from '@nexus/security';
+import { EventBus } from '@asynx6/nexus-event-system';
+import { PermissionManager } from '@asynx6/nexus-security';
 
 function perms() {
   const pm = new PermissionManager();

@@ -1,7 +1,6 @@
 {
-  "name": "@nexus/api",
+  "name": "@asynx6/nexus-api",
   "version": "0.0.1",
-  "private": true,
   "type": "module",
   "main": "index.js",
   "exports": {
@@ -12,12 +11,19 @@
     "test": "node --test"
   },
   "dependencies": {
-    "@nexus/sandbox-runtime": "*",
-    "@nexus/model-providers": "*",
-    "@nexus/agent-runtime": "*",
-    "@nexus/tool-system": "*",
-    "@nexus/security": "*",
-    "@nexus/event-system": "*",
-    "@nexus/shared": "*"
+    "@asynx6/nexus-sandbox-runtime": "*",
+    "@asynx6/nexus-model-providers": "*",
+    "@asynx6/nexus-agent-runtime": "*",
+    "@asynx6/nexus-tool-system": "*",
+    "@asynx6/nexus-security": "*",
+    "@asynx6/nexus-event-system": "*",
+    "@asynx6/nexus-shared": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asynx6/nexus-cli.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
   }
 }

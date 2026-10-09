@@ -8,10 +8,10 @@
 // cluster.leave (or crashes, visible as a missed heartbeat) triggers
 // re-election among the survivors. This is intentionally simple — it fits a
 // single store with a handful of agents, not a geodesic quorum.
-import { makeEvent } from '@nexus/event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 export class Cluster {
-  /** @param {import('@nexus/event-system').EventStore} store
+  /** @param {import('@asynx6/nexus-event-system').EventStore} store
    *  @param {string[]} roster member ids */
   constructor(store, roster) {
     if (!store || typeof store.append !== 'function' || typeof store.replay !== 'function') {

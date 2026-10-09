@@ -4,7 +4,7 @@
 import { AgentStream } from './stream.js';
 
 export class CrossTalk {
-  /** @param {import('@nexus/event-system').EventStore} store
+  /** @param {import('@asynx6/nexus-event-system').EventStore} store
    *  @param {string[]} roster valid recipient ids */
   constructor(store, roster) {
     this.#store = store;

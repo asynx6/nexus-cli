@@ -75,7 +75,7 @@ test('B4: unknown first word is still a run task', () => {
 
 test('B5: run that hits maxSteps exits 1 with a clear message', async () => {
   // FakeProvider that always returns a tool call -> loop exhausts maxSteps.
-  const { FakeProvider } = await import('@nexus/model-providers');
+  const { FakeProvider } = await import('@asynx6/nexus-model-providers');
   const { mkdtemp, rm } = await import('node:fs/promises');
   const { tmpdir } = await import('node:os');
   const { join } = await import('node:path');
@@ -89,7 +89,7 @@ test('B5: run that hits maxSteps exits 1 with a clear message', async () => {
     // not injectable through runNexusCli — so drive the same code path the CLI
     // uses and assert on the loop result + exit mapping directly.
     const { buildRunCtx, closeCtx } = await import('../src/ctx.js');
-    const { AgentLoop } = await import('@nexus/agent-runtime');
+    const { AgentLoop } = await import('@asynx6/nexus-agent-runtime');
     const ctx = await buildRunCtx({
       env: { ...process.env, NEXUS_GATEWAY_KEY: 'k' },
       apiKey: 'k', agentId: 'agent-b5', sandbox: 'host', storeDir: '.nexus/store',

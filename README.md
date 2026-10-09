@@ -1,176 +1,229 @@
+<p align="center">
+  <img src="https://img.shields.io/badge/Node-%E2%89%A522-339933?logo=nodedotjs&logoColor=white" alt="Node >= 22">
+  <img src="https://img.shields.io/badge/runtime_dependencies-0-brightgreen" alt="zero deps">
+  <img src="https://img.shields.io/badge/tests-636%20passing-success" alt="tests">
+  <img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT">
+</p>
+
 # NEXUS
 
-An open-source AI Agent Operating Environment. Agents run tasks in isolated sandboxes, write code, execute terminal commands, fix their own errors, and persist every step as a replayable event log.
+**An open-source AI Agent Operating Environment.** Give an LLM a sandboxed shell, real file tools, and a memory that survives the run — then record every single step as a replayable event.
 
-Zero external runtime dependencies. Runs on Node 22 with `node:sqlite` and any OpenAI-compatible chat-completions endpoint as the model backend.
+Agents run tasks in an isolated Docker sandbox, write code, execute terminal commands, fix their own errors, and persist every decision as an append-only event log you can replay, diff, export, and audit.
 
-## What it gives an agent
+> Zero external runtime dependencies. Node ≥ 22. Any OpenAI-compatible endpoint as the model backend.
 
-- **Isolated sandbox** — filesystem and terminal access inside a Docker container, deny-by-default network and resource limits.
-- **Gated tools** — filesystem, terminal, image/audio/upload tools routed through a permission manager with a full audit trail.
-- **Append-only event log** — every tool call, decision, and result is an event with a sequence number, timestamp, subject, and structured data. Replayable from any point.
-- **Memory** — short-term, long-term, and project scopes, with pluggable storage and an event-stream recall index.
-- **Pluggable models** — any OpenAI-compatible endpoint, with model fallback and multi-model consensus.
-- **Multi-agent supervision** — leader election, a shared work queue, and task recovery across a cluster.
+---
 
-## Why event-sourcing
+## Highlights
 
-Most agent stacks wrap a chat loop. NEXUS is built around the audit trail. Because every action is an event you get, for free:
-
-- **Replay** any run from any point — reproduce or diagnose a failure.
-- **Diff** two runs event-by-event to see exactly why they diverged.
-- **Audit** which agent touched which file under which grant.
-- **Share** an event stream across agents without coupling their runtimes.
+| | |
+|---|---|
+| 🖥️ **Interactive REPL** | Streaming TUI with slash commands, line editor, plan mode — or headless `nexus run` / `-p` |
+| 🧰 **Real coding tools** | Myers diff, multi-edit `fs.edit` (whitespace-tolerant match, CRLF/BOM safe), `fs.glob/grep/list`, background terminal jobs, todo, web fetch, repo symbol map |
+| ⏪ **Checkpoints + `/rewind`** | Snapshot before every mutating tool; restore code, conversation, or both |
+| 🪝 **Hooks** | PreToolUse / PostToolUse / UserPromptSubmit / Stop / SessionStart / SessionEnd — exit 2 blocks with stderr feedback to the model |
+| 🤖 **Subagents** | In-process `agent.spawn` (explore / plan / general + custom agents), read-only enforcement, grants inherit the parent principal |
+| 🔌 **MCP client** | JSON-RPC 2.0 over stdio + streamable HTTP; tools appear as `mcp.<server>.<tool>` |
+| 📄 **Project context** | Hierarchical `NEXUS.md` → `AGENTS.md` → `CLAUDE.md` with `@import`, auto context compaction, `/init` scaffold, `/memory` |
+| 🔒 **Permission model** | Denylist → persistent rules → mode (`ask` / `accept-edits` / `plan` / `auto`) → interactive prompt, full audit trail |
+| 🌲 **Git aware** | Dirty-tree warning, `/diff`, `--worktree` sessions, `--auto-commit` (always asks, never pushes) |
+| 🧾 **Event-sourced** | Every tool call, permission decision, and result is an event: replay, diff two runs, export to a shareable standalone HTML page |
 
 ## Install
-
-Requirements:
-
-- Node **≥ 22** (for `node:sqlite` and the built-in test runner)
-- Docker (only for sandbox isolation; the CLI, dashboard, and unit suites run without it)
-- An OpenAI-compatible chat-completions endpoint
 
 ```sh
 npm install -g @asynx6/nexus-cli
 nexus --version
 ```
 
-Or run from source:
+From GitHub Packages:
+
+```sh
+echo "@asynx6:registry=https://npm.pkg.github.com" >> .npmrc
+# add your GitHub token with read:packages scope to .npmrc first
+npm install -g @asynx6/nexus-cli
+```
+
+Or from source:
 
 ```sh
 git clone https://github.com/asynx6/nexus-cli
-cd nexus-cli
-npm install
+cd nexus-cli && npm install
 node apps/cli/bin.mjs --version
 ```
 
-## Configure
+Requirements: **Node ≥ 22** (`node:sqlite`, built-in test runner), Docker only for sandbox isolation, and an OpenAI-compatible chat-completions endpoint.
 
-`nexus setup` opens an interactive wizard that writes `.env-gateway` (gitignored); or set the variables directly:
+## Quick start
+
+```sh
+# 1. point NEXUS at any OpenAI-compatible gateway
+nexus setup                      # interactive wizard -> .env-gateway
+
+# 2. chat with the agent (streaming REPL)
+nexus
+
+# 3. or run a one-shot task
+nexus run "write a fibonacci function in fib.py"
+```
+
+Environment variables (`.env-gateway`, gitignored):
 
 ```
-NEXUS_GATEWAY_BASE=https://api.asynx6.tech/v1   # any OpenAI-compatible base URL
-NEXUS_GATEWAY_KEY=sk-...                        # your API key
-NEXUS_GATEWAY_MODELS=hermes-agent,im/auto       # comma-separated fallback chain
+NEXUS_GATEWAY_BASE=https://api.example.com/v1   # any OpenAI-compatible base URL
+NEXUS_GATEWAY_KEY=sk-...
+NEXUS_GATEWAY_MODELS=model-a,model-b            # fallback chain, cheapest first
 ```
 
 The provider tries each model in order on 401/404/timeout — put your cheapest reliable model first.
 
-## Usage
+## The REPL
 
-```sh
-nexus run "write a fibonacci function in fib.py"   # run an agent on a task
-nexus replay                                       # tail the event store live
-nexus replay --port 9090                           # browser dashboard + /live /ready probes
-nexus replay diff <left> <right>                   # compare two runs event-by-event
-nexus ask "what is the capital of France?"         # one-shot Q&A, no sandbox
-nexus doctor                                       # environment health check
-nexus doctor --fix                                 # auto-repair common setup issues
-nexus healthz                                      # verify the gateway is reachable
-nexus setup                                        # interactive gateway wizard
-nexus --help                                       # all commands
+`nexus` (no args, in a TTY) drops you into a streaming session:
+
+```
+nexus repl — your-model | mode: ask | session: session-7d3a…
+type /help for commands, Ctrl+C twice to exit
+
+nexus> refactor src/auth.js to use async/await
+▊ streaming response…
 ```
 
-`nexus run` creates a sandbox, mounts the working directory at `/workspace`, grants the agent read/write/edit there plus terminal access, and streams every step to the event store.
+Slash commands: `/plan` `/diff` `/rewind` `/compact` `/memory` `/skills` `/mcp` `/cost` `/status` `/resume` `/permissions` `/doctor` `/init` and more.
 
-### Versioned system prompts
+### Modes
 
-Prompts are named and versioned by content hash, so a recorded run can be replayed against the exact instruction bytes it used.
+| Mode | Behavior |
+|---|---|
+| `ask` | every mutating tool asks first (default) |
+| `accept-edits` | file edits auto-approved, terminal still asks |
+| `plan` | read-only; agent produces a plan for your approval |
+| `auto` | no prompts — requires `--dangerously-auto` |
+
+### Checkpoints & rewind
+
+Every `fs.write` / `fs.edit` snapshots the touched files into `.nexus/checkpoints/` first. `/rewind` lists them and restores code, conversation, or both — the event log itself is append-only, rewinding just opens a new branch from event N.
+
+### Subagents
+
+Define agents in `.nexus/agents/*.md` (frontmatter: `name`, `description`, `tools`, `permissionMode`; body = system prompt). The main agent spawns them with `agent.spawn`, gets a summary back, and never shares its own context. Default `explore` agent is read-only.
+
+### MCP
+
+Drop servers into `.nexus/mcp.json`:
+
+```json
+{ "servers": { "github": { "command": "npx", "args": ["-y", "@modelcontextprotocol/server-github"], "env": { "GITHUB_TOKEN": "…" } } } }
+```
+
+Their tools appear to the agent as `mcp.github.<tool>`, permission-gated like every other tool. `/mcp` shows connection status.
+
+### Hooks
+
+```json
+{
+  "hooks": {
+    "PreToolUse": [{ "match": "fs.write|fs.edit", "command": "node", "args": ["scripts/check-path.mjs"] }],
+    "Stop": [{ "command": "npm", "args": ["test", "--silent"] }]
+  }
+}
+```
+
+Hook receives the event as JSON on stdin. Exit `0` = continue, exit `2` = block the action and feed stderr back to the model. No shell unless you opt in.
+
+### Skills & project docs
+
+- `.nexus/skills/<name>/SKILL.md` — standard frontmatter format; name + description enter the system prompt, the body loads on invocation (`skill.load`).
+- `NEXUS.md` at the project root (falls back to `AGENTS.md` → `CLAUDE.md`, supports `@import` of sibling docs) is injected as project instructions every session.
+
+### Sessions, replay & export
 
 ```sh
-nexus prompts list                                  # names + active version + counts
+nexus run "fix the flaky test" --continue        # resume the last session in this directory
+nexus sessions                                   # list sessions
+nexus replay export <session-id> --html          # standalone shareable HTML page
+nexus replay diff <left> <right>                 # event-by-event comparison of two runs
+nexus replay --port 9090                         # live browser dashboard
+```
+
+## Operators
+
+```sh
+nexus doctor                        # environment health check (--fix to repair)
+nexus healthz                       # gateway reachability
+nexus secrets set OPENAI_API_KEY    # per-project encrypted vault (AES-256-GCM)
+nexus prompts list                  # content-addressed, versioned system prompts
+nexus webhooks add <url>            # HMAC-signed event subscriptions
+nexus plugins --dir=.nexus/tools    # drop-in third-party tools
+nexus telemetry on                  # opt-in counts/timings only, never content
+```
+
+Prompts are versioned by content hash, so a recorded run can be replayed against the exact instruction bytes it used:
+
+```sh
 nexus prompts show cli.default --rev=<hash>         # body of one version
-nexus prompts diff cli.default <left> <right>       # added/removed lines
-nexus prompts rollback cli.default <hash>           # re-pin an older version
-nexus prompts edit cli.default                      # open $EDITOR, publish on save
-
-nexus run "write fib" --prompt=cli.default          # latest
-nexus run "write fib" --prompt=cli.default@<hash>   # exact version
+nexus run "write fib" --prompt=cli.default@<hash>   # pin an exact version
 ```
 
-### Project secrets
-
-Per-project secrets live in an encrypted vault at `.nexus/secrets.enc`, not in `.env` or the repo. AES-256-GCM with a per-project scrypt-derived key over your passphrase — a stolen vault file is worthless without it. Values surface in the agent's exec environment only; never in logs, events, or disk.
+Secrets live in an encrypted vault at `.nexus/secrets.enc` — never in `.env`, logs, or events. Values surface in the agent's exec environment only:
 
 ```sh
-nexus secrets init                                   # create the vault (asks a passphrase)
-export NEXUS_PROJECT_PASSPHRASE=...                  # or set it per run
-nexus secrets set OPENAI_API_KEY                     # value prompted, not echoed
-nexus secrets list                                   # names only
-nexus secrets grant agent-1 OPENAI_API_KEY           # allow an agent to read it
-nexus secrets revoke agent-1 OPENAI_API_KEY
+nexus secrets init                # create the vault (asks a passphrase)
+nexus secrets grant agent-1 OPENAI_API_KEY
 ```
 
-### Webhooks
-
-Subscribe any HTTP endpoint to the event stream. Deliveries are HMAC-SHA256 signed in the `X-NEXUS-Signature` header (`sha256=<hex>`), with exponential-backoff retries that stop on permanent errors (4xx) and keep going on transient ones (5xx, 429, network).
+Webhook deliveries are HMAC-SHA256 signed (`X-NEXUS-Signature`) with exponential-backoff retries:
 
 ```sh
-export NEXUS_API_BASE=http://localhost:4000
-export NEXUS_API_TOKEN=...
-
 nexus webhooks add https://your-service/hooks/nexus --events=task.completed --secret=wh-secret
-nexus webhooks list
 nexus webhooks test hook-<id>
-nexus webhooks pause hook-<id>
 ```
 
-### Plugins & tools
-
-Drop a `*.tools.js` file in `.nexus/tools/` (or install a `@nexus/tool-*` package) and its tools are auto-discovered on the next run:
+Plugins: drop a `*.tools.js` in `.nexus/tools/` and its tools are auto-discovered on the next run:
 
 ```js
 // .nexus/tools/weather.tools.js
-export const tools = [{ name: "wx.now", description: "current weather", handler: async () => ({}), }];
+export const tools = [{ name: "wx.now", description: "current weather", handler: async () => ({}) }];
 ```
 
-```sh
-nexus plugins --dir=.nexus/tools   # list what was discovered
-```
-
-### Telemetry
-
-Off by default. `nexus telemetry on` records only counts and timings (tool names, model ids, durations) — never prompts, file paths, env values, or tokens. `NEXUS_TELEMETRY=0` is a hard off.
+Telemetry is off by default; `nexus telemetry on` records only counts and timings — never prompts, paths, or tokens.
 
 ## Architecture
 
 ```
 nexus/
 ├── packages/
-│   ├── shared/           # event contracts, id gen, env loader, logger
+│   ├── shared/           # event contracts, ids, env loader
 │   ├── event-system/     # EventBus + JSONL store + sqlite index + replay/diff
-│   ├── sandbox-runtime/  # Docker engine API over raw socket, resource limits
-│   ├── security/         # PermissionManager + AuditTrail + secrets vault
-│   ├── tool-system/      # ToolRegistry + executor + built-in tools + auto-discovery
-│   ├── model-providers/  # OpenAI-compatible client, fallback + rate limiting
+│   ├── sandbox-runtime/  # Docker engine API over raw socket
+│   ├── security/         # permissions, denylist, audit trail, secrets vault
+│   ├── tool-system/      # registry, executor, checkpoints, built-in tools
+│   ├── model-providers/  # OpenAI-compatible client, fallback + streaming
 │   ├── agent-runtime/    # agent loop, tool bridge
-│   ├── consensus/        # multi-model voting
-│   ├── multi-agent/      # streams, handshake, crosstalk, cluster supervisor
 │   ├── memory/           # pluggable memory + event-recall index
-│   ├── prompts/          # content-addressed system-prompt registry
+│   ├── mcp-server/       # expose NEXUS to other MCP-aware clients
+│   ├── consensus/        # multi-model voting
+│   ├── multi-agent/      # cluster supervisor, work queue
+│   ├── prompts/          # content-addressed prompt registry
 │   ├── plugin-registry/  # third-party tool discovery
 │   └── telemetry/        # opt-in usage metrics
 └── apps/
     ├── cli/              # the nexus command
-    ├── api/              # control-plane REST (webhooks, auth)
-    └── license-server/   # self-hosted HMAC license verification
+    └── api/              # control-plane REST (webhooks, auth)
 ```
 
-One public surface per package (`index.js`); implementation files live in `src/`.
+Every package is independently published to [GitHub Packages](https://github.com/asynx6?tab=packages&q=nexus) as `@asynx6/nexus-*` — one public surface per package (`index.js`), implementation in `src/`.
 
 ## Development
 
 ```sh
 npm install
-node scripts/bundle-cli.mjs   # stage the self-contained publish copy
-npm test                       # run the full suite
+npm run lint          # syntax-check all 115 modules
+npm test              # 636 tests
 ```
 
-Conventions:
-
-- ESM only, no TypeScript.
-- Zero external runtime dependencies — check the Node stdlib first.
-- `node:test` for tests. No Jest, Vitest, or Mocha.
+Conventions: ESM only, zero external runtime dependencies (Node stdlib first), `node:test` — no Jest/Vitest/Mocha.
 
 ## License
 

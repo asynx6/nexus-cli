@@ -11,7 +11,7 @@
 // parentSessionId link (P13 link rule preserved).
 import { existsSync, readdirSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { makeEvent } from '@nexus/event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 import { parseSkillMd } from './skills.js';
 
 export const DEFAULT_AGENTS = {

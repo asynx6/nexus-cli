@@ -13,7 +13,7 @@
 // values) in the vault file's sibling; the Vault format already has a
 // version byte for it.
 
-import { makeEvent } from '@nexus/event-system';
+import { makeEvent } from '@asynx6/nexus-event-system';
 
 export class ProjectSecrets {
   #vault;
