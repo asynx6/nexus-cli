@@ -35,9 +35,9 @@ export function exportSessionHtml(events, { title = 'nexus session' } = {}) {
     if (!started && e.ts) started = e.ts;
     if (e.ts) ended = e.ts;
     const d = e.data ?? {};
-    if (e.name === 'session.user_message') msgs.push({ kind: 'user', text: d.text ?? d.message ?? '', ts: e.ts });
+    if (e.name === 'session.user_message') msgs.push({ kind: 'user', text: d.content ?? d.text ?? d.message ?? '', ts: e.ts });
     else if (e.name === 'session.assistant_message') {
-      msgs.push({ kind: 'assistant', text: d.text ?? d.message ?? '', ts: e.ts });
+      msgs.push({ kind: 'assistant', text: d.content ?? d.text ?? d.message ?? '', ts: e.ts });
       if (Number.isFinite(d.total_tokens)) tokens += d.total_tokens;
     }
     else if (e.name === 'agent.tool_called') msgs.push({ kind: 'tool', tool: d.tool, args: d.args, ts: e.ts });
