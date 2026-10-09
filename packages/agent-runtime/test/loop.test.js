@@ -141,3 +141,50 @@ test('verdict shortcut does NOT fire when last tool errored', async () => {
   assert.strictEqual(r.done, true);
   assert.strictEqual(r.answer, 'try again');
 });
+
+test('B6: verdict shortcut is OFF by default — short ERROR content does not stop the loop', async () => {
+  let turn = 0;
+  const provider = { chat: async () => (++turn === 1
+    ? { model: 'm1', content: 'ERROR found', tool_call: { name: 'fs.write', arguments: { path: '/x', content: 'y' } } }
+    : { content: 'final answer', model: 'm1' }) };
+  const loop = new AgentLoop({ provider, tools: fakeTools() });
+  const r = await loop.run('t', { agentId: 'a' });
+  assert.strictEqual(r.done, true);
+  assert.strictEqual(r.answer, 'final answer');
+  assert.strictEqual(r.steps, 2, 'default must NOT shortcut on verdict word');
+});
+
+test('B6: verdict shortcut opt-in terminates on PASS after a successful tool', async () => {
+  // P09 shape: turn 1 = tool_call only; turn 2 = tool_call + short 'PASS' content.
+  let turn = 0;
+  const provider = { chat: async () => (++turn === 1
+    ? { model: 'm1', tool_call: { name: 'fs.write', arguments: { path: '/x', content: 'y' } } }
+    : { model: 'm1', content: 'PASS', tool_call: { name: 'fs.write', arguments: { path: '/z', content: 'w' } } }) };
+  const loop = new AgentLoop({ provider, tools: fakeTools(), verdictShortcut: true });
+  const r = await loop.run('t', { agentId: 'a' });
+  assert.strictEqual(r.done, true);
+  assert.strictEqual(r.answer, 'PASS');
+  assert.strictEqual(r.steps, 2);
+});
+
+test('B7: all tool_calls in one turn execute; one tool message per tool_call_id', async () => {
+  const provider = { chat: async () => ({
+    model: 'm1',
+    content: null,
+    tool_calls: [
+      { id: 'c1', name: 'fs.write', arguments: { path: '/a', content: '1' } },
+      { id: 'c2', name: 'fs.write', arguments: { path: '/b', content: '2' } },
+    ],
+  }) };
+  const log = [];
+  const tools = fakeTools(log);
+  const loop = new AgentLoop({ provider, tools });
+  const r = await loop.run('t', { agentId: 'a', maxSteps: 1 });
+  assert.strictEqual(r.done, false, 'maxSteps=1 with only tool calls -> exhausted');
+  assert.strictEqual(log.length, 2, 'both calls must execute');
+  const toolMsgs = r.history.filter((m) => m.role === 'tool');
+  assert.strictEqual(toolMsgs.length, 2);
+  assert.deepStrictEqual(toolMsgs.map((m) => m.tool_call_id).sort(), ['c1', 'c2']);
+  const assistant = r.history.find((m) => m.role === 'assistant' && m.tool_calls);
+  assert.strictEqual(assistant.tool_calls.length, 2);
+});

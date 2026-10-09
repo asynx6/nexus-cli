@@ -52,7 +52,7 @@ t('write -> read roundtrip inside sandbox, events on the store', async () => {
   assert.strictEqual(w.result.created, true);
   const r = await executor.execute({ tool: 'fs.read', args: { path: '/workspace/hello.txt' } }, ctx());
   assert.strictEqual(r.ok, true);
-  assert.strictEqual(r.result.content, 'hi nexus\n');
+  assert.strictEqual(r.result.content, '1\thi nexus'); // Fase 4: numbered lines, trailing newline stripped
   const evs = [...store.replay()];
   const names = evs.map((e) => e.name);
   assert.ok(names.includes('file.created'), `names=${names}`);
@@ -64,10 +64,10 @@ t('edit: exact single match, then terminal.exec runs the edited script', async (
   await executor.execute({ tool: 'fs.write', args: { path: '/workspace/fib.py', content: 'a,b=0,1\nfor _ in range(10):\n    a,b=b,a+b\nprint(a)\n' } }, ctx());
   const e = await executor.execute({ tool: 'fs.edit', args: { path: '/workspace/fib.py', old_text: 'range(10)', new_text: 'range(20)' } }, ctx());
   assert.strictEqual(e.ok, true);
-  assert.strictEqual(e.result.replacements, 1);
+  assert.deepStrictEqual(e.result.replacements, [1]); // Fase 4: per-edit counts
   const amb = await executor.execute({ tool: 'fs.edit', args: { path: '/workspace/fib.py', old_text: 'a', new_text: 'x' } }, ctx());
   assert.strictEqual(amb.ok, false);
-  assert.match(amb.reason, /matches \d+ times/);
+  assert.match(amb.reason, /found \d+ matches/);
   const run = await executor.execute({ tool: 'terminal.exec', args: { command: 'python', args: ['/workspace/fib.py'] } }, ctx());
   assert.strictEqual(run.ok, true);
   assert.strictEqual(run.result.stdout.trim(), '6765');

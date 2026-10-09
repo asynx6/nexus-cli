@@ -4,10 +4,31 @@
 import { makeEvent } from '@nexus/event-system';
 
 const SECRET_RE = /(token|secret|password|passwd|api[-_]?key|authorization)/i;
+// a secret-looking ASSIGNMENT line: "password: x", "api_key=y", "Bearer xyz"
+const SECRET_LINE_RE = /^\s*(token|secret|password|passwd|api[-_]?key|authorization)\b\s*[:=]\s*\S+/i;
+const BEARER_RE = /\b(Bearer|Basic)\s+[A-Za-z0-9._~+/=-]{8,}\b/;
+
+function redactString(s) {
+  // multi-line text (file output): redact assignment lines + bearer tokens in place
+  if (s.includes('\n')) {
+    return s
+      .split('\n')
+      .map((line) => {
+        let out = line;
+        if (SECRET_LINE_RE.test(line)) out = line.replace(/^(\s*\S+\s*[:=]\s*).*/, '$1[redacted]');
+        out = out.replace(BEARER_RE, '$1 [redacted]');
+        return out;
+      })
+      .join('\n');
+  }
+  // single short line that IS a secret value -> whole string redacted
+  if (s.length <= 200 && SECRET_RE.test(s)) return '[redacted]';
+  return s.replace(BEARER_RE, '$1 [redacted]');
+}
 
 export function redact(obj) {
   if (obj === null || typeof obj !== 'object') {
-    return typeof obj === 'string' && SECRET_RE.test(obj) ? '[redacted]' : obj;
+    return typeof obj === 'string' ? redactString(obj) : obj;
   }
   if (Array.isArray(obj)) return obj.map(redact);
   const out = {};

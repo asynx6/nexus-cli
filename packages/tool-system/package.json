@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@nexus/event-system": "*",
+    "@nexus/sandbox-runtime": "*",
     "@nexus/security": "*",
     "@nexus/shared": "*"
   }

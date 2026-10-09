@@ -12,7 +12,8 @@ export class ToolRegistry {
    *   handler: (args: object, ctx: object) => Promise<object> }} def
    */
   register(def) {
-    if (!def || typeof def.name !== 'string' || !/^[a-z][a-z0-9_]*\.[a-z][a-z0-9_]*$/.test(def.name)) {
+    // 2..4 segments: fs.read, mcp.<server>.<tool> (3), future nesting (4)
+    if (!def || typeof def.name !== 'string' || !/^[a-z][a-z0-9_]*(\.[a-z][a-z0-9_]*){1,3}$/.test(def.name)) {
       throw new TypeError('tool name must be dot.separated_kind (e.g. fs.read)');
     }
     if (typeof def.description !== 'string' || !def.description) throw new TypeError(`tool ${def.name}: description required`);

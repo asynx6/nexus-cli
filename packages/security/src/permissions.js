@@ -5,6 +5,12 @@
 function matchPath(patterns, p) {
   if (typeof p !== 'string') return false;
   for (const pat of patterns) {
+    // host mode: '**' admits RELATIVE paths only (no leading /); absolute
+    // escape is rejected here and enforced again by hostPath in the tool.
+    if (pat === '**') {
+      if (p.length > 0 && !p.startsWith('/') && !/^[A-Za-z]:[\\/]/.test(p)) return true;
+      continue;
+    }
     if (pat.endsWith('/**')) {
       const base = pat.slice(0, -3);
       if (p === base || p.startsWith(base + '/')) return true;

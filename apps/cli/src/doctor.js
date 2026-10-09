@@ -6,6 +6,7 @@ import { join, resolve } from 'node:path';
 import { hostname, platform, arch } from 'node:os';
 import { version as nodeVersion } from 'node:process';
 import { execFileSync } from 'node:child_process';
+import { DEFAULT_GATEWAY_BASE } from '@nexus/shared';
 
 export async function runDoctor({ env = process.env, stdout = console.log, exec = execFileSync } = {}) {
   const ok = (label, detail = '') => stdout(`  ok    ${label} ${detail}`);
@@ -29,7 +30,7 @@ export async function runDoctor({ env = process.env, stdout = console.log, exec 
   else warn('Env file', 'not present; using environment variables');
 
   // Gateway config
-  const base = env.NEXUS_GATEWAY_BASE ?? 'https://api.asynx6.tech/v1';
+  const base = env.NEXUS_GATEWAY_BASE ?? DEFAULT_GATEWAY_BASE;
   const key = env.NEXUS_GATEWAY_KEY;
   if (key) ok('Gateway key', 'set');
   else { fail('Gateway key', 'NEXUS_GATEWAY_KEY not set'); exit = 2; }

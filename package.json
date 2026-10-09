@@ -13,10 +13,8 @@
   },
   "scripts": {
     "test": "npm run test --workspaces --if-present",
-    "lint": "node --check .tmp-check-all.mjs || true"
+    "lint": "node --check bin.mjs 2>/dev/null; node scripts/check-syntax.mjs"
   },
   "license": "MIT",
-  "dependencies": {
-    "@nexus/audit": "^0.0.1"
-  }
+  "dependencies": {}
 }

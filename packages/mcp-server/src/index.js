@@ -271,7 +271,6 @@ export async function runStdio(server) {
 
 /** HTTP transport — JSON-RPC over POST /rpc. */
 export function runHttp(server, { port = 9090, host = '127.0.0.1' } = {}) {
-  const http = require('node:http'); // optional, ESM-friendly via dynamic import
   return import('node:http').then(({ createServer }) => {
     const srv = createServer(async (req, res) => {
       if (req.method === 'POST' && req.url === '/rpc') {

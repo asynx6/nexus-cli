@@ -45,5 +45,16 @@
     "test": "node --test"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@nexus/agent-runtime": "*",
+    "@nexus/audit": "*",
+    "@nexus/event-system": "*",
+    "@nexus/model-providers": "*",
+    "@nexus/plugin-registry": "*",
+    "@nexus/prompts": "*",
+    "@nexus/security": "*",
+    "@nexus/shared": "*",
+    "@nexus/telemetry": "*",
+    "@nexus/tool-system": "*"
+  }
 }

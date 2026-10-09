@@ -92,7 +92,7 @@ test('diff reports added and removed lines between two hashes', async () => {
   // than guessing a prefix from a possibly-reordered list output.
   const doc = JSON.parse(readFileSync(env.NEXUS_PROMPTS_FILE, 'utf8'));
   const prompt = doc.prompts.find((p) => p.name === 'cli.default');
-  const oldVersion = prompt.versions.find((v) => v.body.includes('Work strictly inside'));
+  const oldVersion = prompt.versions.find((v) => v.body.includes('NEXUS agent working in a real project directory'));
   assert.ok(oldVersion, 'pre-edit version should be persisted');
   const old = oldVersion.hash;
   const r = await run(env, ['diff', 'cli.default', old, active]);
@@ -203,5 +203,5 @@ test('regression: rollback survives a reload of the store', async () => {
   await publish(env, 'cli.default', 'Rolled forward.');
   const back = await run(env, ['rollback', 'cli.default', oldActive]);
   assert.strictEqual(back.code, 0, back.text);
-  assert.strictEqual((await run(env, ['show', 'cli.default'])).text.includes('Work strictly inside'), true);
+  assert.strictEqual((await run(env, ['show', 'cli.default'])).text.includes('NEXUS agent working in a real project directory'), true);
 });

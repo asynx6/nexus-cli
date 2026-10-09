@@ -7,3 +7,7 @@ export { SecretStore } from './src/secrets.js';
 export { Vault } from './src/vault.js';
 export { ProjectSecrets } from './src/project-secrets.js';
 export { TokenBucket, SlidingWindow, RateLimitError } from './src/rate-limit.js';
+export {
+  PERMISSION_MODES, isHardDeniedCommand, isHardDeniedPath,
+  isWriteAction, isReadTool, loadSettings, saveSettings, evalRules,
+} from './src/denylist.js';

@@ -5,6 +5,7 @@
 // --model overrides the primary model. --raw prints the raw completion JSON.
 // Exit 0 on a reply, 1 on a gateway error.
 import { ModelProvider } from '@nexus/model-providers';
+import { DEFAULT_GATEWAY_BASE } from '@nexus/shared';
 
 export function parseAskArgs(argv) {
   const flags = {};
@@ -22,7 +23,7 @@ export async function runAsk(argv, env = process.env, stdout = console.log, stde
   const { flags, question } = parseAskArgs(argv);
   if (!question) { stderr('ask: a question is required (nexus ask "what is 2+2")'); return 2; }
 
-  const baseUrl = (env.NEXUS_GATEWAY_BASE ?? 'https://api.asynx6.tech/v1').replace(/\/+$/, '');
+  const baseUrl = (env.NEXUS_GATEWAY_BASE ?? DEFAULT_GATEWAY_BASE).replace(/\/+$/, '');
   const apiKey = env.NEXUS_GATEWAY_KEY;
   if (!apiKey) { stderr('ask: NEXUS_GATEWAY_KEY required — run: nexus setup'); return 2; }
   const models = (flags.model ?? env.NEXUS_GATEWAY_MODELS ?? 'hermes-agent')

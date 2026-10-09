@@ -6,3 +6,4 @@ export { EVENTS, EVENT_SCHEMA_VERSION } from './events.js';
 export { newAgentId, newSandboxId, newTaskId, newEventId, newId } from './ids.js';
 export { loadEnv } from './env.js';
 export { makeLogger } from './log.js';
+export { DEFAULT_GATEWAY_BASE } from './gateway.js';

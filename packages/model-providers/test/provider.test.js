@@ -96,7 +96,8 @@ test('opts.tools sent as native function schemas; native tool_calls normalized',
   const p = new ModelProvider({ baseUrl: 'https://api.test', apiKey: 'k', models: ['m'] });
   const r = await p.chat([{ role: 'user', content: 'hi' }], { tools: [{ name: 'fs_write', description: 'd', parameters: { type: 'object' } }] });
   assert.deepStrictEqual(captured.tools, [{ type: 'function', function: { name: 'fs_write', description: 'd', parameters: { type: 'object' } } }]);
-  assert.deepStrictEqual(r.tool_call, { name: 'fs_write', arguments: { path: '/p' } });
+  assert.deepStrictEqual(r.tool_call, { id: 'c1', name: 'fs_write', arguments: { path: '/p' } });
+  assert.deepStrictEqual(r.tool_calls, [{ id: 'c1', name: 'fs_write', arguments: { path: '/p' } }]);
   assert.strictEqual(r.content, null);
   globalThis.fetch = undefined;
 });
@@ -149,4 +150,66 @@ test('rateLimit default uses rpm as burst', () => {
     models: ['m'], rateLimit: { rpm: 5 }
   });
   assert.deepEqual(p.models, ['m']);
+});
+
+test('B7: SSE tool_call deltas accumulate across chunks (name + argument fragments)', async () => {
+  const sse = [
+    'data: {"choices":[{"delta":{"tool_calls":[{"index":0,"id":"c1","function":{"name":"fs_","arguments":"{\\"pa"}}]}}]}',
+    '',
+    'data: {"choices":[{"delta":{"tool_calls":[{"index":0,"function":{"name":"write","arguments":"th\\":\\"/p\\"}"}}]}}]}',
+    '',
+    'data: {"choices":[{"delta":{}}],"usage":{"total_tokens":9}}',
+    '',
+    'data: [DONE]',
+    '',
+  ].join('\n');
+  mockFetch(() => new Response(sse, { status: 200, headers: { 'Content-Type': 'text/event-stream' } }));
+  const p = new ModelProvider({ baseUrl: 'https://api.test', apiKey: 'k', models: ['m'] });
+  const r = await p.chat([{ role: 'user', content: 'hi' }]);
+  assert.deepStrictEqual(r.tool_calls, [{ id: 'c1', name: 'fs_write', arguments: { path: '/p' } }]);
+  globalThis.fetch = undefined;
+});
+
+test('B7: two tool_calls in one response both survive', async () => {
+  mockFetch(() => resp({
+    choices: [{ message: { content: null, tool_calls: [
+      { id: 'a', type: 'function', function: { name: 'fs.read', arguments: '{"path":"/1"}' } },
+      { id: 'b', type: 'function', function: { name: 'fs.write', arguments: '{"path":"/2"}' } },
+    ] } }],
+  }));
+  const p = new ModelProvider({ baseUrl: 'https://api.test', apiKey: 'k', models: ['m'] });
+  const r = await p.chat([{ role: 'user', content: 'hi' }]);
+  assert.strictEqual(r.tool_calls.length, 2);
+  assert.strictEqual(r.tool_calls[0].id, 'a');
+  assert.strictEqual(r.tool_calls[1].id, 'b');
+  assert.strictEqual(r.tool_call.id, 'a');
+  globalThis.fetch = undefined;
+});
+
+test('B8: internal fields (ok) never reach the API body', async () => {
+  let captured;
+  mockFetch((u, b) => { captured = b; return resp({ choices: [{ message: { content: 'ok' } }] }); });
+  const p = new ModelProvider({ baseUrl: 'https://api.test', apiKey: 'k', models: ['m'] });
+  await p.chat([
+    { role: 'user', content: 'hi' },
+    { role: 'assistant', content: '', tool_calls: [{ id: 'c1', type: 'function', function: { name: 't', arguments: '{}' } }] },
+    { role: 'tool', tool_call_id: 'c1', content: 'out', ok: true },
+  ]);
+  const toolMsg = captured.messages.find((m) => m.role === 'tool');
+  assert.deepStrictEqual(Object.keys(toolMsg).sort(), ['content', 'role', 'tool_call_id']);
+  globalThis.fetch = undefined;
+});
+
+test('B7: max_tokens defaults to 4096, NEXUS_MAX_TOKENS overrides', async () => {
+  let captured;
+  mockFetch((u, b) => { captured = b; return resp({ choices: [{ message: { content: 'ok' } }] }); });
+  const p = new ModelProvider({ baseUrl: 'https://api.test', apiKey: 'k', models: ['m'] });
+  await p.chat([{ role: 'user', content: 'hi' }]);
+  assert.strictEqual(captured.max_tokens, 4096);
+  process.env.NEXUS_MAX_TOKENS = '2048';
+  try {
+    await p.chat([{ role: 'user', content: 'hi' }]);
+    assert.strictEqual(captured.max_tokens, 2048);
+  } finally { delete process.env.NEXUS_MAX_TOKENS; }
+  globalThis.fetch = undefined;
 });

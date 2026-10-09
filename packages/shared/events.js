@@ -38,4 +38,11 @@ export const EVENTS = Object.freeze({
   CONSENSUS_ROUND: 'consensus.round',     // data: { round, models, votes, agreement }
   CONSENSUS_VERDICT: 'consensus.verdict',  // data: { mode, models, winner, agreement, reason }
   POLICY_DECISION: 'policy.decision',     // data: { allow, reason, ruleIndex, ctx }
+  TODO_WRITTEN: 'todo.written',           // data: { todos, counts }
+  WEB_FETCHED: 'web.fetched',             // data: { url, status, bytes, contentType }
+  REPO_MAPPED: 'repo.mapped',             // data: { path, files, symbols, scanned, cached }
+  SESSION_COMPACTED: 'session.compacted', // data: { session, compacted_from, old_messages, kept_messages, summary_chars }
+  SESSION_REWOUND: 'session.rewound',     // data: { from, to_seq, branch, restored }
+  SUBAGENT_STARTED: 'subagent.started',   // data: { agent, subject, parentSession, task }
+  SUBAGENT_FINISHED: 'subagent.finished', // data: { agent, subject, steps, ok }
 });
