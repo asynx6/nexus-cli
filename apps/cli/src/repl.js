@@ -166,11 +166,26 @@ export async function runRepl({ env = process.env, stdout = process.stdout, stde
   }
 
   const agentId = newAgentId();
-  const ctx = await buildRunCtx({
-    env, agentId, sandbox: 'host',
-    permissionMode: startMode ?? undefined,
-    log: { info: () => {}, warn: () => {}, error: () => {}, debug: () => {} },
-  });
+  let ctx;
+  try {
+    ctx = await buildRunCtx({
+      env, agentId, sandbox: 'host',
+      permissionMode: startMode ?? undefined,
+      log: { info: () => {}, warn: () => {}, error: () => {}, debug: () => {} },
+    });
+  } catch (e) {
+    // No gateway configured — walk the user through setup instead of a stack trace.
+    if (!/NEXUS_GATEWAY_KEY/.test(e.message)) { stderr.write(`repl: ${e.message}\n`); return 1; }
+    stderr.write('gateway is not configured yet — let\'s set it up (writes .env-gateway in this folder)\n\n');
+    const { runSetup } = await import('./setup.js');
+    const code = await runSetup([], { stdin, stdout: (m) => stdout.write(`${m}\n`), stderr: (m) => stderr.write(`${m}\n`) });
+    if (code !== 0) return code;
+    ctx = await buildRunCtx({
+      env, agentId, sandbox: 'host',
+      permissionMode: startMode ?? undefined,
+      log: { info: () => {}, warn: () => {}, error: () => {}, debug: () => {} },
+    });
+  }
   ctx.agentId = agentId;
   const buildSystemPrompt = (c) => {
     const base = renderCliDefault({

@@ -3,7 +3,8 @@
 // Non-interactive: `nexus setup --base=URL --key=KEY --model=NAME --yes`
 // Zero deps. Node >= 22 ESM.
 
-import { writeFileSync, writeSync, existsSync, chmodSync, statSync, readSync, openSync } from 'node:fs';
+import { writeFileSync, existsSync, chmodSync, statSync } from 'node:fs';
+import { createInterface } from 'node:readline';
 import { join } from 'node:path';
 
 const DEFAULT_BASE = 'https://api.asynx6.tech/v1';
@@ -22,21 +23,35 @@ export function parseSetupArgs(argv) {
   return { flags, positional };
 }
 
-function ask(q, def) {
-  // Sync read from stdin fd 0 — keeps zero deps.
-  const fd = 0;
-  writeSync(1, `${q}${def ? ` [${def}]` : ''}: `);
-  let line = '';
-  const buf = Buffer.alloc(1);
-  while (true) {
-    const n = readSync(fd, buf, 0, 1, null);
-    if (n === 0) break;
-    const ch = buf.toString('utf8');
-    if (ch === '\n' || ch === '\r') break;
-    line += ch;
-  }
-  const v = line.trim();
-  return v || (def ?? '');
+/**
+ * Prompt one line. Loop until non-empty when a default is absent.
+ * Reads through a line queue so piped stdin (all lines at once, then EOF)
+ * still answers every prompt correctly.
+ */
+function makePrompter(rl) {
+  const queue = [];
+  let done = false;
+  let notify = null;
+  rl.on('line', (l) => { queue.push(l); if (notify) { notify(); notify = null; } });
+  rl.on('close', () => { done = true; if (notify) { notify(); notify = null; } });
+  return async function ask(q, def, emptyOk = false) {
+    const suffix = def ? ` [${def}]` : '';
+    for (;;) {
+      if (!queue.length) {
+        if (!done) await new Promise((resolve) => { notify = resolve; });
+        if (!queue.length) {
+          // closed and nothing buffered
+          if (def || emptyOk) return def ?? '';
+          throw new Error(`nexus setup: input ended before '${q}' was answered`);
+        }
+      }
+      const line = queue.shift();
+      const v = line.trim();
+      if (v) return v;
+      if (def || emptyOk) return def ?? '';
+      // required and empty — ask again
+    }
+  };
 }
 
 /** Build .env-gateway content. */
@@ -62,6 +77,11 @@ export async function runSetup(argv, opts = {}) {
   const cwd = opts.cwd ?? process.cwd();
   const envPath = opts.envPath ?? join(cwd, '.env-gateway');
 
+  if (existsSync(envPath) && !flags.force && !flags.f) {
+    out(`found existing config: ${envPath}`);
+    out('run with --force to overwrite, or edit the file directly.');
+  }
+
   // Non-interactive mode: all three from flags.
   const nonInteractive = flags.yes || flags.y;
   let baseUrl = flags.base ?? flags['base-url'];
@@ -78,11 +98,22 @@ export async function runSetup(argv, opts = {}) {
     }
   } else {
     out('nexus setup — configure your AI gateway');
+    out('(press Enter to accept the value in brackets)');
     out('');
-    baseUrl = ask('Gateway base URL', baseUrl ?? DEFAULT_BASE);
-    apiKey = ask('API key', apiKey);
-    models = ask('Model (comma-separated for multiple)', models ?? DEFAULT_MODEL);
-    out('');
+    // readline needs a stream for output; CLI passes console.log (a function)
+    const stdoutArg = typeof out === 'function' ? process.stdout : out;
+    const rl = createInterface({ input: opts.stdin ?? process.stdin, output: stdoutArg });
+    const say = typeof out === 'function' ? out : (m) => out.write(`${m}\n`);
+    const ask = makePrompter(rl);
+    let askErr = null;
+    try {
+      baseUrl = await ask('Gateway base URL', baseUrl ?? DEFAULT_BASE);
+      apiKey = await ask('API key', apiKey);
+      models = await ask('Model (comma-separated for fallback)', models ?? DEFAULT_MODEL, true);
+    } catch (e) { askErr = e; }
+    rl.close();
+    if (askErr) { err(String(askErr.message || askErr)); return 1; }
+    say('');
   }
 
   if (!baseUrl || !apiKey) {

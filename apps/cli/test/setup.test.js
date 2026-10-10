@@ -44,3 +44,39 @@ test('non-interactive setup without --key exits 2', async () => {
   assert.ok(errs.join('\n').includes('--key is required'));
   rmSync(TMP, { recursive: true, force: true });
 });
+
+test('interactive setup: piped lines (all at once) fill base/key/model', async () => {
+  mkdirSync(TMP, { recursive: true });
+  const f = join(TMP, '.env-gateway');
+  const { PassThrough } = await import('node:stream');
+  const input = new PassThrough();
+  input.end('http://piped/v1\nsk-piped\npiped-model\n');
+  const rc = await runSetup([], { stdin: input, stdout: () => {}, stderr: () => {}, cwd: TMP, envPath: f });
+  assert.strictEqual(rc, 0);
+  const written = readFileSync(f, 'utf8');
+  assert.match(written, /NEXUS_GATEWAY_BASE=http:\/\/piped\/v1/);
+  assert.match(written, /NEXUS_GATEWAY_KEY=sk-piped/);
+  assert.match(written, /NEXUS_GATEWAY_MODELS=piped-model/);
+  rmSync(TMP, { recursive: true, force: true });
+});
+
+test('interactive setup: blank model line keeps default, EOF without key errors clearly', async () => {
+  mkdirSync(TMP, { recursive: true });
+  const f = join(TMP, '.env-gateway');
+  const { PassThrough } = await import('node:stream');
+  const input = new PassThrough();
+  input.end('http://piped2/v1\nsk-p2\n\n');
+  const rc = await runSetup([], { stdin: input, stdout: () => {}, stderr: () => {}, cwd: TMP, envPath: f });
+  assert.strictEqual(rc, 0);
+  const written = readFileSync(f, 'utf8');
+  assert.match(written, /NEXUS_GATEWAY_KEY=sk-p2/);
+  assert.match(written, /NEXUS_GATEWAY_MODELS=hermes-agent/);
+  rmSync(TMP, { recursive: true, force: true });
+
+  const errs = [];
+  const input2 = new PassThrough();
+  input2.end('http://piped3/v1\n');
+  await runSetup([], { stdin: input2, stdout: () => {}, stderr: (s) => errs.push(s), cwd: TMP, envPath: f });
+  assert.ok(errs.join('\n').includes("input ended before 'API key'"));
+  rmSync(TMP, { recursive: true, force: true });
+});

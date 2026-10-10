@@ -223,7 +223,8 @@ export async function runNexusCli(argv, env = process.env, stdout = console.log,
   }
 
   if (args.cmd === 'setup') {
-    return await runSetup(argv.slice(1), { stdout, stderr });
+    try { return await runSetup(argv.slice(1), { stdout, stderr }); }
+    catch (e) { stderr(String(e.message || e)); return 1; }
   }
 
   if (args.cmd === 'plugins') {
@@ -549,12 +550,28 @@ export async function runNexusCli(argv, env = process.env, stdout = console.log,
             stderr('run: --permission-mode=auto requires --dangerously-auto (agent can run any command without asking)');
             return 2;
           }
-          ctx = await buildRunCtx({
-            env, agentId, sandbox: sandboxFlag ?? 'host',
-            permissionMode: modeFlag ?? undefined,
-            onAsk: makePermissionPrompt() ?? undefined,
-            log: { info: stdout, warn: stderr, error: stderr, debug: () => {} },
-          });
+          try {
+            ctx = await buildRunCtx({
+              env, agentId, sandbox: sandboxFlag ?? 'host',
+              permissionMode: modeFlag ?? undefined,
+              onAsk: makePermissionPrompt() ?? undefined,
+              log: { info: stdout, warn: stderr, error: stderr, debug: () => {} },
+            });
+          } catch (e) {
+            // No gateway configured — offer setup instead of dying (interactive only).
+            if (!/NEXUS_GATEWAY_KEY/.test(String(e.message))) { stderr(`run: ${e.message || e}`); return 1; }
+            if (!stdinIsTty(env)) { stderr('run: NEXUS_GATEWAY_KEY required (env or opts) — run `nexus setup` first'); return 1; }
+            stderr('gateway is not configured yet — let\'s set it up (writes .env-gateway in this folder)\n');
+            const { runSetup } = await import('./setup.js');
+            const code = await runSetup([], { stdin: process.stdin, stdout, stderr });
+            if (code !== 0) return code;
+            ctx = await buildRunCtx({
+              env, agentId, sandbox: sandboxFlag ?? 'host',
+              permissionMode: modeFlag ?? undefined,
+              onAsk: makePermissionPrompt() ?? undefined,
+              log: { info: stdout, warn: stderr, error: stderr, debug: () => {} },
+            });
+          }
         } catch (e) { stderr(`run: ${e.message || e}`); return 1; }
     const taskId = newTaskId();
     const maxSteps = readFlags(args.flags, 'max-steps', 'maxSteps') ?? 16;
