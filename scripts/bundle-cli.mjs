@@ -34,17 +34,17 @@ for (const ent of readdirSync(cli, { withFileTypes: true })) {
   }
 }
 
-// --- 2. vendor/ = packages/* minus tests ---
+// --- 2. vendor/ = packages/* minus tests (dir names match @asynx6/nexus-<pkg>) ---
 rmSync(pubVendor, { recursive: true, force: true });
 mkdirSync(pubVendor, { recursive: true });
 for (const name of PKGS) {
   const src = join(root, 'packages', name);
   if (!existsSync(src)) { console.log(`skip ${name} (missing)`); continue; }
-  cpSync(src, join(pubVendor, name), { recursive: true });
+  cpSync(src, join(pubVendor, 'nexus-' + name), { recursive: true });
   for (const drop of ['test', 'node_modules', 'coverage']) {
-    rmSync(join(pubVendor, name, drop), { recursive: true, force: true });
+    rmSync(join(pubVendor, 'nexus-' + name, drop), { recursive: true, force: true });
   }
-  console.log(`vendored ${name}`);
+  console.log(`vendored nexus-${name}`);
 }
 
 // --- 3. Rewrite @asynx6/<pkg> specifiers to relative vendor paths ---
@@ -52,7 +52,7 @@ for (const name of PKGS) {
 // literals that legitimately mention @asynx6/* (scaffolded project output) stay intact.
 // Matches static import/export-from, bare import, AND dynamic import('...'),
 // so a runtime await import('@asynx6/x') in the publish copy resolves too.
-const SPEC_RE = /((?:^|\n)(?:import|export)[^\n]*?\bfrom\s*|(?:^|\n)import\s*|(?:^|\n|[^\w.])\bimport\(\s*)(['"])@nexus\/([a-z-]+)(\/[^\s'"]*)?/g;
+const SPEC_RE = /((?:^|\n)(?:import|export)[^\n]*?\bfrom\s*|(?:^|\n)import\s*|(?:^|\n|[^\w.])\bimport\(\s*)(['"])@asynx6\/nexus-([a-z-]+)(\/[^\s'"]*)?/g;
 
 // dir: directory to walk; baseDir: what depth is measured from;
 // isVendorBase: true when dir IS vendor/ (sibling refs, no "vendor/" prefix).
@@ -70,7 +70,7 @@ function rewriteDir(dir, baseDir, isVendorBase) {
       const depth = rel ? rel.split('/').length : 0;
       const ups = depth === 0 ? './' : '../'.repeat(depth);
       // ESM filesystem resolution needs explicit /index.js (no exports map).
-      const target = isVendorBase ? ups + pkg : ups + 'vendor/' + pkg;
+      const target = isVendorBase ? ups + 'nexus-' + pkg : ups + 'vendor/nexus-' + pkg;
       return prefix + q + target + (sub || '/index.js');
     });
     if (next !== before) { writeFileSync(p, next); console.log(`rewrote ${p.replace(pub, '')}`); }
@@ -84,7 +84,7 @@ rewriteDir(pub, pub, false);
 // so the source tree (not the publish copy) resolves @asynx6/* during npm test.
 // Never lands in the tarball: _publish has no symlinks.
 const nm = join(cli, 'node_modules');
-const scopeDir = join(nm, '@nexus');
+const scopeDir = join(nm, '@asynx6');
 mkdirSync(scopeDir, { recursive: true });
 for (const name of PKGS) {
   const link = join(scopeDir, name);

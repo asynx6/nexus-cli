@@ -57,6 +57,6 @@
     "@asynx6/nexus-tool-system": "*"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://registry.npmjs.org"
   }
 }
